@@ -1,11 +1,18 @@
 Package: Trans2Kegg
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Annotate transcripts and predicted protein sequences with KEGG orthologs 
+and pathways.
+Version: 0.99.0
+
+Author: Chuck Roesel
+Maintainer: Chuck Roesel <croesel@gmail.com>
+Description: Trans2Kegg accepts as input either transcript sequences or
+predicted protein sequences, along with a BLAST input file, and assigns KEGG
+orthologs and pathways.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+Imports:
+    dplyr,
+    tidyr,
+    KEGGREST

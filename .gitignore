@@ -2,3 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+*.tsv
+*.csv
+*.err
+*.RData
+*.fa
