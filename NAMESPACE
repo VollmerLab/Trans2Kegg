@@ -1,2 +1,2 @@
-export("readBLAST", "init_data1", "init_data2")
+export("readBLAST", "init_data1", "init_data2", "init_data")
 import('KEGGREST', 'tidyr', 'splitstackshape', 'future')

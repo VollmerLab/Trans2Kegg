@@ -26,12 +26,17 @@ getKO <- function(){
   save.image("koDetailList.RData")
 }
 
+init_data <- function(){
+  getOrg()
+  getKO()
+}
+
 init_data1 <- function(){
   plan(multiprocess)
   future(getKO())
 }
 init_data2 <- function(){
   plan(multiprocess)
-  future(getOrg)
+  future(getOrg())
 }
 
