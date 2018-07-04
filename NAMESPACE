@@ -1,1 +1,2 @@
-exportPattern("transAnnot")
+export("readBLAST", "init_data1", "init_data2")
+import('KEGGREST', 'tidyr', 'splitstackshape', 'future')

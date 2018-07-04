@@ -11,3 +11,5 @@ spBlast2 <- subset(spBlast, evalue < 1e-10 & cov > 50 & ident > 50,
 spBlast3 <- separate(spBlast2, symbol, c("symbol", "species"), sep = "_")
 head(spBlast3)
 speciesCount <- aggregate(sp ~ species, data=spBlast3, FUN=NROW)
+arrange(speciesCount, desc(sp))
+length(unique(spBlast3$sp))
