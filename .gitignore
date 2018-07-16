@@ -8,3 +8,8 @@
 *.RData
 *.fa
 *.log
+*.fasta
+*.phr
+*.pin
+*.psq
+*.swp

@@ -1,3 +1,18 @@
+formatEntry <- function(i){
+  entry <- i$ENTRY
+  genes <-  i$GENES
+  dfEntry <- data.frame("ko"=NA, "kegg"=genes, "name"=NA, "desc"=NA)
+  dfEntry$ko <- entry
+  dfEntry$name <- i$NAME
+  dfEntry$desc <- i$DEFINITION
+  dfEntry <- separate(dfEntry, kegg, c("species", "kegg"), sep=":")
+  dfEntry <- cSplit(dfEntry, "kegg", sep=" ", direction="long", type.convert=F)
+  dfEntry <- cSplit(dfEntry, "kegg", sep="(",fixed=T ,direction="wide", type.convert=F)
+  dfEntry$kegg <- paste(tolower(dfEntry$species), dfEntry$kegg_1, sep=":")
+  dfEntry <- subset(dfEntry, select=c("kegg", "ko", "name", "desc"))
+  return(dfEntry)
+}
+
 getOrg <- function(){
   sink(file="dfUniKegg.log")
   org <- keggList("organism")
@@ -11,7 +26,19 @@ getOrg <- function(){
       dfUniKegg <- rbind(dfUniKegg, dfConv)
     }
   }
-  save.image("dfUniKegg.RData")
+  save(dfUniKegg, file="dfUniKegg.RData")
+}
+
+getPathways <- function(i){
+  entry <- i$ENTRY
+  pathway <-  i$PATHWAY
+  if(!is.null(pathway)){
+    #print(pathway)
+    dfEntry <- data.frame("ko" = NA,"pathdesc"=pathway)
+    dfEntry$ko <- entry
+    dfEntry$pathId <- rownames(dfEntry)
+    return(dfEntry)
+  }
 }
 
 getKO <- function(){
@@ -23,20 +50,21 @@ getKO <- function(){
     koDetail <- keggGet(ko)
     koDetailList <- c(koDetailList, koDetail)
   }
-  save.image("koDetailList.RData")
+  keggToKoList <- lapply(koDetailList, formatEntry)
+  dfKeggToKO <- do.call("rbind", keggToKoList)
+  dfKeggToKO <- separate(dfKeggToKO, "kegg", c("org", "gene"),":", remove = F)
+  save(dfKeggToKO, file="dfKeggToKO.RData")
+  pathList <- lapply(koDetailList, getPathways)
+  dfKoPathway <- do.call("rbind", pathList)
+  save(dfKoPathway, file="dfKoPathway.RData")
 }
 
 init_data <- function(){
-  getOrg()
-  getKO()
-}
-
-init_data1 <- function(){
+  sink(file="init_data.log")
   plan(multiprocess)
+  #future(blastTrans('OGS2_20140407_transNoSpaceHeader2.fa'))
+  #future(getOrg())
   future(getKO())
-}
-init_data2 <- function(){
-  plan(multiprocess)
-  future(getOrg())
+  #getKO()
 }
 

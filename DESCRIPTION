@@ -15,4 +15,6 @@ Imports:
     parallel,
     splitstackshape,
     data.table,
-    future
+    future,
+    GEOquery,
+    stringr
