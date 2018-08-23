@@ -13,3 +13,4 @@
 *.pin
 *.psq
 *.swp
+inst/doc

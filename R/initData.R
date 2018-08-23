@@ -41,16 +41,25 @@ getPathways <- function(i){
   }
 }
 
+#' Initialize KEGG data
+#'
+#' @param x A number
+#' @return The sum of \code{x} and \code{y}
+#' @examples
+#' init_data()
+
 getKO <- function(){
   sink(file="koDetailList.log")
   koList <- keggList("ko")
   koDetailList <- list()
   for (ko in names(koList)){
     print(ko)
-    koDetail <- keggGet(ko)
+    koDetail <- tryCatch(keggGet(ko), error=function(e) print(ko))
+    #koDetail <- keggGet(ko)
     koDetailList <- c(koDetailList, koDetail)
   }
   keggToKoList <- lapply(koDetailList, formatEntry)
+  save(keggToKoList, file="keggToKoList.RData")
   dfKeggToKO <- do.call("rbind", keggToKoList)
   dfKeggToKO <- separate(dfKeggToKO, "kegg", c("org", "gene"),":", remove = F)
   save(dfKeggToKO, file="dfKeggToKO.RData")
@@ -59,11 +68,16 @@ getKO <- function(){
   save(dfKoPathway, file="dfKoPathway.RData")
 }
 
+#' Initialize KEGG data
+#'
+#' @param x A number
+#' @return The sum of \code{x} and \code{y}
+#' @examples
+#' init_data()
 init_data <- function(){
-  sink(file="init_data.log")
   plan(multiprocess)
   #future(blastTrans('OGS2_20140407_transNoSpaceHeader2.fa'))
-  #future(getOrg())
+  future(getOrg())
   future(getKO())
   #getKO()
 }
