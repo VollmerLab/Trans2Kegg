@@ -12,12 +12,8 @@ Imports:
     dplyr,
     tidyr,
     KEGGREST,
-    parallel,
-    splitstackshape,
-    data.table,
-    future,
-    GEOquery,
-    stringr
+    Biostrings,
+    annotate
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0
