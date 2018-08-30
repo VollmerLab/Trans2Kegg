@@ -16,5 +16,5 @@ The sum of \code{x} and \code{y}
 Initialize KEGG data
 }
 \examples{
-init_data()
+\dontrun{}
 }

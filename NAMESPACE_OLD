@@ -1,2 +1,0 @@
-export("blastTrans", "init_data", "trimReads", "getKO", "mergeBlastKEGG")
-import('KEGGREST', 'tidyr', 'splitstackshape', 'future', 'GEOquery', 'stringr', 'dplyr')

@@ -1,11 +1,11 @@
 Package: Trans2Kegg
 Type: Package
-Title: Annotate transcripts and predicted protein sequences.
+Title: Annotate transcripts and predicted protein sequences
 Version: 0.99.0
 Author: Chuck Roesel
 Maintainer: Chuck Roesel <croesel@gmail.com>
-Description: Trans2Kegg 
-License: What license is it under?
+Description: A tool to simplify and standardize annotation of transcriptomes.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:

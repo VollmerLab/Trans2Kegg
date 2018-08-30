@@ -1,3 +1,5 @@
+#' @import tidyr
+#' @import splitstackshape
 formatEntry <- function(i){
   entry <- i$ENTRY
   genes <-  i$GENES
@@ -7,7 +9,8 @@ formatEntry <- function(i){
   dfEntry$desc <- i$DEFINITION
   dfEntry <- separate(dfEntry, kegg, c("species", "kegg"), sep=":")
   dfEntry <- cSplit(dfEntry, "kegg", sep=" ", direction="long", type.convert=F)
-  dfEntry <- cSplit(dfEntry, "kegg", sep="(",fixed=T ,direction="wide", type.convert=F)
+  dfEntry <- cSplit(dfEntry, "kegg", sep="(",fixed=T ,direction="wide",
+    type.convert=F)
   dfEntry$kegg <- paste(tolower(dfEntry$species), dfEntry$kegg_1, sep=":")
   dfEntry <- subset(dfEntry, select=c("kegg", "ko", "name", "desc"))
   return(dfEntry)
@@ -15,6 +18,7 @@ formatEntry <- function(i){
 
 getOrg <- function(){
   sink(file="dfUniKegg.log")
+  print("retrieving organisms")
   org <- keggList("organism")
   orgs <- unique(org[,2])
   dfUniKegg <- data.frame("uni"=NA, "kegg"=NA)
@@ -46,10 +50,13 @@ getPathways <- function(i){
 #' @param x A number
 #' @return The sum of \code{x} and \code{y}
 #' @examples
-#' init_data()
+#' \dontrun{}
+#' @export
+#' @import tidyr
 
 getKO <- function(){
   sink(file="koDetailList.log")
+  print("retrieving orthologs")
   koList <- keggList("ko")
   koDetailList <- list()
   for (ko in names(koList)){
@@ -73,11 +80,16 @@ getKO <- function(){
 #' @param x A number
 #' @return The sum of \code{x} and \code{y}
 #' @examples
+#' \dontrun{}
 #' init_data()
+#' @export
+#' @import future
+#' @import KEGGREST
 init_data <- function(){
   plan(multiprocess)
   #future(blastTrans('OGS2_20140407_transNoSpaceHeader2.fa'))
   future(getOrg())
+  #plan(multiprocess)
   future(getKO())
   #getKO()
 }
