@@ -1,9 +1,16 @@
 rm(list = ls())
 
+#' Annotate selected transcripts from FASTA file
+#' @name annotateTranscripts
 #' @import tidyr
 #' @import KEGGREST
 #' @import Biostrings
 #' @import annotate
+#' @param accessions A character vector of accessions from FASTA file to
+#' be annotated
+#' @param refTransFile FASTA file of transcripts to be annotated
+#' @examples
+#' annotateTranscripts(c("KXJ29317.1", "KXJ29331.1"), "kTranscripts.fa")
 #' @export
 annotateTranscripts <- function(accessions, refTransFile){
   refTrans <- readDNAStringSet(refTransFile)
@@ -46,8 +53,4 @@ annotateTranscripts <- function(accessions, refTransFile){
     }
   }
 }
-
-#accessions <- c("KXJ29317.1", "KXJ29331.1", "KXJ29349.1", "KXJ29355.1", "KXJ29295.1", "KXJ29270.1")
-
-#annotateTranscriptss(accessions, "kTranscripts.fa")
 
