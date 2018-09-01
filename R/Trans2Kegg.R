@@ -23,7 +23,7 @@ annotateTranscripts <- function(accessions, refTransFile){
       database="swissprot",
       program="blastx",as="data.frame", expect=1e-5),
       error=function(e) print(accession))
-    if(length(blastResult) > 0){
+    if(is.data.frame(blastResult) & length(blastResult) > 0){
       blastResult <- subset(blastResult, select=c("Iteration_query-def",
         "Iteration_query-len", "Hit_accession", "Hit_len", "Hsp_evalue",
         "Hsp_identity", "Hsp_gaps", "Hsp_align-len"))
