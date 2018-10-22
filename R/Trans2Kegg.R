@@ -1,5 +1,3 @@
-rm(list = ls())
-
 #' Annotate selected transcripts from FASTA file
 #' @name annotateTranscripts
 #' @import tidyr
@@ -12,10 +10,10 @@ rm(list = ls())
 #' @examples
 #' annotateTranscripts(c("KXJ29317.1", "KXJ29331.1"), "kTranscripts.fa")
 #' @export
-annotateTranscripts <- function(accessions, refTransFile){
+annotateTranscripts <- function(accessions, refTransFile, rowNumStart){
   refTrans <- readDNAStringSet(refTransFile)
   dfUniKegg <- data.frame()
-  rowNum <- 0
+  rowNum <- rowNumStart
   for (accession in accessions){
     transSeq <- refTrans[accession]
     seq <- as.character(transSeq)
