@@ -1,0 +1,243 @@
+\documentclass[12pt,portrait]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+    \setmainfont[]{Lato}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[left=2.5cm,right=2.5cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{}
+    \pretitle{\vspace{\droptitle}}
+  \posttitle{}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+\usepackage{lscape}
+\newcommand{\blandscape}{\begin{landscape}}
+\newcommand{\elandscape}{\end{landscape}}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+
+\usepackage{indentfirst}
+\usepackage[style=apa,backend=biber]{biblatex}
+\usepackage{setspace}\doublespacing
+\usepackage[left]{lineno}
+\newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+
+\begin{document}
+
+\begin{figure}
+    \advance\leftskip-1.5cm
+    \vspace{-2cm}
+    \includegraphics[width=\paperwidth]{NU_COS_ELetterhead_2013.pdf}
+\end{figure}
+\singlespacing
+\begin{flushright}
+Charles L. Roesel
+\end{flushright}
+\begin{flushright}
+Steven V. Vollmer
+\end{flushright}
+\begin{flushright}
+Northeastern University
+\end{flushright}
+\begin{flushright}
+430 Nahant Road
+\end{flushright}
+\begin{flushright}
+Nahant, MA 01908  
+\end{flushright}
+
+October, 22, 2018
+
+Dear Editor
+
+We wish to submit an original research article entitled \ldots{}
+
+In this paper, we report \ldots{}
+
+Our major findings include \ldots{}
+
+We believe this manuscript is appropriate for publication by Molecular
+Ecology Resources because \ldots{}
+
+Sincerely,
+
+Charles L. Roesel \newline Steve V. Vollmer \newline
+
+\linenumbers
+\clearpage
+
+\textbf{Title: Transcriptome-to-KEGG annotation with Trans2KEGG}
+\newline
+
+Charles L. Roesel, Steven V. Vollmer \newline
+
+Northeastern University, Marine Science Center, Nahant, MA USA \newline
+\newline
+
+Corresponding Author:
+
+Charles L. Roesel
+
+Northeastern University\\
+Marine Science Center\\
+430 Nahant Rd.\\
+Nahant, MA, USA\\
+Email: \href{mailto:croesel@gmail.com}{\nolinkurl{croesel@gmail.com}}\\
+Fax: \newline
+
+Keywords: Annotation, transcriptome, KEGG, R, BioConductor
+
+Running Title: Transcriptome-to-KEGG
+
+\clearpage
+
+\doublespacing
+
+\setlength{\parindent}{0.2in}
+
+\newpage
+
+\hypertarget{abstract}{%
+\subsubsection{Abstract}\label{abstract}}
+
+\hypertarget{introduction}{%
+\subsubsection{Introduction}\label{introduction}}
+
+\hypertarget{methods}{%
+\subsubsection{Methods}\label{methods}}
+
+\hypertarget{results}{%
+\subsubsection{Results}\label{results}}
+
+\hypertarget{discussion}{%
+\subsection{Discussion}\label{discussion}}
+
+\hypertarget{conclusion}{%
+\subsection{Conclusion}\label{conclusion}}
+
+\clearpage
+\singlespacing
+
+\hypertarget{references}{%
+\subsubsection{References}\label{references}}
+
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{8pt}
+
+\hypertarget{refs}{}
+
+\doublespacing
+\setlength{\parindent}{0.2in}
+
+\hypertarget{supporting-information}{%
+\subsubsection{Supporting Information}\label{supporting-information}}
+
+\hypertarget{supplementary-file-s1}{%
+\subsubsection{Supplementary File S1}\label{supplementary-file-s1}}
+
+\hypertarget{supplementary-file-s2}{%
+\subsubsection{Supplementary File S2}\label{supplementary-file-s2}}
+
+\hypertarget{supplementary-file-s3}{%
+\subsubsection{Supplementary File S3}\label{supplementary-file-s3}}
+
+\hypertarget{supplementary-file-s4}{%
+\subsubsection{Supplementary File S4}\label{supplementary-file-s4}}
+
+\hypertarget{data-accessibility}{%
+\subsubsection{Data Accessibility}\label{data-accessibility}}
+
+\hypertarget{author-contributions}{%
+\subsubsection{Author Contributions}\label{author-contributions}}
+
+\hypertarget{tables-and-figures}{%
+\subsubsection{Tables and Figures}\label{tables-and-figures}}
+
+\singlespacing
+
+
+\end{document}
