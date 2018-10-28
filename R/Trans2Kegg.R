@@ -10,10 +10,9 @@
 #' @examples
 #' annotateTranscripts(c("KXJ29317.1", "KXJ29331.1"), "kTranscripts.fa")
 #' @export
-annotateTranscripts <- function(accessions, refTransFile, rowNumStart){
+annotateTranscripts <- function(accessions, refTransFile, rowNum, outFile){
   refTrans <- readDNAStringSet(refTransFile)
   dfUniKegg <- data.frame()
-  rowNum <- rowNumStart
   for (accession in accessions){
     transSeq <- refTrans[accession]
     seq <- as.character(transSeq)
@@ -43,9 +42,9 @@ annotateTranscripts <- function(accessions, refTransFile, rowNumStart){
               #print(uniToKO)
               blastToKO <- merge(uniToKO,blastResult, by.x="uniprot",
                 by.y="Hit_accession")
-              write.table(blastToKO, file="blastToKO.csv",
+              write.table(blastToKO, file=outFile,
                 col.names=(rowNum ==1),
-                append=(rowNum != 1), row.names=FALSE)
+                append=(rowNum !=1), sep=',', row.names=FALSE)
             }
           }
         }

@@ -126,6 +126,18 @@ library(kableExtra)
 
 ### Methods
 
+The annotateTranscript function requires four parameters:
+- a vector of accession numbers from the FASTA file
+- the path to the FASTA file
+- a T/F append parameter to indicate whether to start the output file new, or append
+annotations to the existing output file.
+- The output filename
+```{r}
+library(Trans2Kegg)
+outFile <- "annot.csv"
+annotateTranscripts(c("KXJ29317.1", "KXJ29331.1"), "kTranscripts.fa", 0, outFile)
+```
+
 
 ### Results
 
