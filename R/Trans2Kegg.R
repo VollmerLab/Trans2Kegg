@@ -10,10 +10,18 @@
 #' @examples
 #' annotateTranscripts(c("KXJ29317.1", "KXJ29331.1"), "kTranscripts.fa")
 #' @export
-annotateTranscripts <- function(accessions, refTransFile, rowNum, outFile){
+annotateTranscripts <- function(accessions, refTransFile, outFile){
   refTrans <- readDNAStringSet(refTransFile)
+  rowNum <- 0
+  accDone <- c()
   dfUniKegg <- data.frame()
-  for (accession in accessions){
+  if (file.exists(outFile)) {
+    annot <- read.csv("annot.csv", stringsAsFactors = FALSE)
+    rowNum <- nrow(annot)
+    accDone <- unique(annot$Iteration_query.def)
+  }
+  accRemaining <- setdiff (accessions, accDone)
+  for (accession in accRemaining){
     transSeq <- refTrans[accession]
     seq <- as.character(transSeq)
     blastResult <- tryCatch(blastSequences(paste0(">",accession,"\n", seq),
@@ -49,6 +57,13 @@ annotateTranscripts <- function(accessions, refTransFile, rowNum, outFile){
           }
         }
       }
+    }else{
+      emptyRow <- data.frame(uniprot=NA, kegg = NA, ko=NA, desc=NA,
+        Iteration_query.def=accession, Iteration_query.len=NA, Hit_len=NA,
+        Hsp_evalue=NA, Hsp_identity=NA, Hsp_gaps = NA, Hsp_align.len=NA)
+      write.table(emptyRow, file=outFile,
+        col.names=(rowNum ==1),
+        append=(rowNum !=1), sep=',', row.names=FALSE)
     }
   }
 }

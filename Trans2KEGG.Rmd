@@ -113,6 +113,7 @@ knitr::opts_chunk$set(
 )
 library(knitr)
 library(kableExtra)
+library(dplyr)
 ```
 \setlength{\parindent}{0.2in}
 
@@ -134,8 +135,22 @@ annotations to the existing output file.
 - The output filename
 ```{r}
 library(Trans2Kegg)
+acc <- c("KXJ29317.1", "KXJ29331.1", "KXJ30207.1")
 outFile <- "annot.csv"
-annotateTranscripts(c("KXJ29317.1", "KXJ29331.1"), "kTranscripts.fa", 0, outFile)
+annotateTranscripts(acc, "kTranscripts.fa", outFile)
+```
+
+```{r}
+annot <- read.csv("annot.csv", stringsAsFactors = FALSE)
+colnames(annot)
+accDone <- unique(annot$Iteration_query.def)
+setdiff (acc, accDone)
+new.row <- data.frame(uniprot=NA, kegg = NA, ko=NA, desc=NA, 
+  Iteration_query.def="KXJ30207.1", Iteration_query.len=NA, Hit_len=NA, 
+  Hsp_evalue=NA, Hsp_identity=NA, Hsp_gaps = NA, Hsp_align.len=NA)
+annot <- rbind(annot, new.row)
+
+annot
 ```
 
 
