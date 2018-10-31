@@ -19,7 +19,6 @@ annotateTranscripts <- function(accessions, refTransFile, outFile){
   rowNum <- 0
   accDone <- c()
   dfUniKegg <- data.frame()
-  write.csv(dfUniKegg, file="dfUniKegg.csv")
   if (file.exists(outFile)) {
     annot <- read.csv(outFile, stringsAsFactors = FALSE)
     rowNum <- nrow(annot)
@@ -45,7 +44,8 @@ annotateTranscripts <- function(accessions, refTransFile, outFile){
           newRow <- data.frame("uniprot"=uniprot, "kegg"=uniKegg)
           dfUniKegg <- rbind(dfUniKegg, newRow)
           for(kegg in newRow$kegg){
-            koDetail <- tryCatch(keggGet(kegg), error=function(e) print(kegg))
+            koDetail <- tryCatch(keggGet(kegg),
+              error=function(e) print(kegg))
             ortho <- koDetail[[1]]$ORTHOLOGY
             if(length(names(ortho)) > 0){
               rowNum <- rowNum + 1
