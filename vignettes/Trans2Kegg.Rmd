@@ -24,7 +24,7 @@ library(Biostrings)
 transFile <- system.file("extdata", "transcriptSample.fa", package="Trans2Kegg")
 transIds <- c("rna3 gene=rfx6")
 library(Trans2Kegg)
-annotateTranscripts(transIds, transFile)
+annotateTranscripts(transIds, transFile, "annot.csv")
 ```
 ## Styles
 

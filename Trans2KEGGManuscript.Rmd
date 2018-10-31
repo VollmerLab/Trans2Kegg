@@ -1,0 +1,191 @@
+---
+fontsize: 12pt
+mainfont: Lato
+geometry: "left=2.5cm,right=2.5cm,top=3cm,bottom=3cm"
+documentclass: "article"
+header-includes:
+  - \usepackage{indentfirst}
+  - \usepackage[style=apa,backend=biber]{biblatex}
+  - \usepackage{setspace}\doublespacing
+  - \usepackage[left]{lineno}
+  - \newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+output:
+  pdf_document:
+    includes:
+      in_header: header.tex 
+    latex_engine: xelatex
+    fig_caption: true
+    keep_tex: true
+  md_document:
+    variant: gfm
+    df_print: paged
+  html_document:
+    df_print: paged
+  word_document: default
+classoption: portrait
+editor_options: 
+  chunk_output_type: inline
+bibliography: annotation.bib
+csl: molecular-ecology.csl
+always_allow_html: yes
+---
+\begin{figure}
+    \advance\leftskip-1.5cm
+    \vspace{-2cm}
+    \includegraphics[width=\paperwidth]{NU_COS_ELetterhead_2013.pdf}
+\end{figure}
+\singlespacing
+\begin{flushright}
+Charles L. Roesel
+\end{flushright}
+\begin{flushright}
+Steven V. Vollmer
+\end{flushright}
+\begin{flushright}
+Northeastern University
+\end{flushright}
+\begin{flushright}
+430 Nahant Road
+\end{flushright}
+\begin{flushright}
+Nahant, MA 01908  
+\end{flushright}
+
+`r format(Sys.Date(), '%B, %d, %Y')`
+
+Dear Editor
+
+We wish to submit an original research article entitled ...
+
+In this paper, we report ...
+
+Our major findings include ...
+
+We believe this manuscript is appropriate for publication by Molecular Ecology Resources because ...
+
+Sincerely,
+
+Charles L. Roesel
+\newline
+Steve V. Vollmer
+\newline
+
+\linenumbers
+\clearpage
+
+**Title: Transcriptome-to-KEGG annotation with Trans2KEGG**
+\newline
+
+Charles L. Roesel, Steven V. Vollmer
+\newline
+
+Northeastern University, Marine Science Center, Nahant, MA USA
+\newline
+\newline
+
+Corresponding Author:
+
+Charles L. Roesel
+
+Northeastern University  
+Marine Science Center  
+430 Nahant Rd.  
+Nahant, MA, USA  
+Email: croesel@gmail.com  
+Fax: 
+\newline
+
+Keywords: Annotation, transcriptome, KEGG, R, BioConductor
+
+Running Title: Transcriptome-to-KEGG 
+
+\clearpage
+
+\doublespacing
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(
+	echo = F,
+	message = FALSE,
+	warning = FALSE,
+	options(knitr.kable.NA = '')
+)
+library(knitr)
+library(kableExtra)
+library(dplyr)
+```
+\setlength{\parindent}{0.2in}
+
+\newpage
+
+### Abstract
+
+
+### Introduction
+
+
+### Methods
+
+The annotateTranscript function requires four parameters:
+- a vector of accession numbers from the FASTA file
+- the path to the FASTA file
+- a T/F append parameter to indicate whether to start the output file new, or append
+annotations to the existing output file.
+- The output filename
+```{r}
+library(Trans2Kegg)
+acc <- c("KXJ29317.1", "KXJ29331.1", "KXJ30207.1", "KXJ30097.1")
+outFile <- "annot.csv"
+annotateTranscripts(acc, "aiptasia.fa", outFile)
+```
+
+```{r}
+annot <- read.csv("annot.csv", stringsAsFactors = FALSE)
+
+
+annot
+```
+
+
+### Results
+
+
+### Discussion
+
+
+### Conclusion
+
+\clearpage
+\singlespacing
+### References 
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{8pt}
+<div id="refs"></div>
+\doublespacing
+\setlength{\parindent}{0.2in}
+
+### Supporting Information
+
+### Supplementary File S1
+
+
+### Supplementary File S2
+
+
+### Supplementary File S3
+
+
+### Supplementary File S4
+
+
+### Data Accessibility
+
+
+### Author Contributions
+
+
+### Tables and Figures
+
+\singlespacing

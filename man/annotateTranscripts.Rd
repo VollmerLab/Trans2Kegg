@@ -4,17 +4,21 @@
 \alias{annotateTranscripts}
 \title{Annotate selected transcripts from FASTA file}
 \usage{
-annotateTranscripts(accessions, refTransFile)
+annotateTranscripts(accessions, refTransFile, outFile)
 }
 \arguments{
 \item{accessions}{A character vector of accessions from FASTA file to
 be annotated}
 
 \item{refTransFile}{FASTA file of transcripts to be annotated}
+
+\item{outFile}{csv output file for annotation results}
 }
 \description{
 Annotate selected transcripts from FASTA file
 }
 \examples{
-annotateTranscripts(c("KXJ29317.1", "KXJ29331.1"), "kTranscripts.fa")
+filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
+annotateTranscripts(c("KXJ29317.1", "KXJ29331.1"), filepath,
+ "annot.csv")
 }

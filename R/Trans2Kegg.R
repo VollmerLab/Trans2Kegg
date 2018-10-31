@@ -4,19 +4,24 @@
 #' @import KEGGREST
 #' @import Biostrings
 #' @import annotate
+#' @importFrom utils read.csv write.csv write.table
 #' @param accessions A character vector of accessions from FASTA file to
 #' be annotated
 #' @param refTransFile FASTA file of transcripts to be annotated
+#' @param outFile csv output file for annotation results
 #' @examples
-#' annotateTranscripts(c("KXJ29317.1", "KXJ29331.1"), "kTranscripts.fa")
+#' filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
+#' annotateTranscripts(c("KXJ29317.1", "KXJ29331.1"), filepath,
+#'  "annot.csv")
 #' @export
 annotateTranscripts <- function(accessions, refTransFile, outFile){
   refTrans <- readDNAStringSet(refTransFile)
   rowNum <- 0
   accDone <- c()
   dfUniKegg <- data.frame()
+  write.csv(dfUniKegg, file="dfUniKegg.csv")
   if (file.exists(outFile)) {
-    annot <- read.csv("annot.csv", stringsAsFactors = FALSE)
+    annot <- read.csv(outFile, stringsAsFactors = FALSE)
     rowNum <- nrow(annot)
     accDone <- unique(annot$Iteration_query.def)
   }
@@ -32,6 +37,7 @@ annotateTranscripts <- function(accessions, refTransFile, outFile){
       blastResult <- subset(blastResult, select=c("Iteration_query-def",
         "Iteration_query-len", "Hit_accession", "Hit_len", "Hsp_evalue",
         "Hsp_identity", "Hsp_gaps", "Hsp_align-len"))
+      write.csv(blastResult, file="blastResult.csv")
       uniprots <- unique(blastResult$Hit_accession)
       for (uniprot in uniprots){
         uniKegg <- keggConv("genes", paste0("up:", uniprot))
@@ -47,6 +53,7 @@ annotateTranscripts <- function(accessions, refTransFile, outFile){
                 "kegg"=kegg, "ko"=names(ortho),
                 "desc"=ortho[names(ortho)])
               uniToKO <- merge(newRow, newOrtho)
+              write.csv(uniToKO, file="uniToKO.csv")
               #print(uniToKO)
               blastToKO <- merge(uniToKO,blastResult, by.x="uniprot",
                 by.y="Hit_accession")
