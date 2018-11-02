@@ -14,6 +14,9 @@ be annotated}
 
 \item{outFile}{csv output file for annotation results}
 }
+\value{
+Annotation results are written to the csv file specified by outFile
+}
 \description{
 Annotate selected transcripts from FASTA file
 }
