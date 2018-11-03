@@ -4,6 +4,8 @@
 #' @importFrom utils read.csv write.csv
 #' @importFrom stats na.omit
 #' @param annotFile csv output file from annotateTranscripts
+#' @return Annotation results are written to dfPaths.csv, dfPathsKos.csv,
+#' dfRefs.csv
 #' @examples
 #' filepath <- system.file("extdata", "annot.csv", package="Trans2Kegg")
 #' getPathways(filepath)
