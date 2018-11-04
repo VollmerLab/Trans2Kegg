@@ -72,5 +72,6 @@ annotateTranscripts <- function(accessions, refTransFile, outFile){
             append=(rowNum !=1), sep=',', row.names=FALSE)
         }
     }
+    return(0)
 }
 

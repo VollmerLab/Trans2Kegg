@@ -21,6 +21,6 @@ Imports:
     annotate,
     utils,
     stats
-Suggests: knitr, rmarkdown
+Suggests: knitr, rmarkdown, RUnit, BiocGenerics
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0
