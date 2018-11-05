@@ -7,7 +7,7 @@
 #' @return Annotation results are written to dfPaths.csv, dfPathsKos.csv,
 #' dfRefs.csv
 #' @examples
-#' filepath <- system.file("extdata", "annot.csv", package="Trans2Kegg")
+#' filepath <- system.file("extdata", "deCovAndCountDesc.csv", package="Trans2Kegg")
 #' getPathways(filepath)
 #' @export
 getPathways <- function(annotFile){

@@ -48,6 +48,7 @@ annotateTranscripts <- function(accessions, refTransFile, outFile){
                             error=function(e) print(kegg))
                         ortho <- koDetail[[1]]$ORTHOLOGY
                         if(length(names(ortho)) > 0){
+                            if(!is.na(kegg)){
                             rowNum <- rowNum + 1
                             newOrtho <- data.frame(row.names=kegg,
                                 "kegg"=kegg, "ko"=names(ortho),
@@ -59,6 +60,10 @@ annotateTranscripts <- function(accessions, refTransFile, outFile){
                             write.table(blastToKO, file=outFile,
                                 col.names=(rowNum ==1), append=(rowNum !=1), 
                                 sep=',', row.names=FALSE)
+                            }else{
+                                print(ortho)
+                                return(-1)
+                            }
                         }
                     }
                 }
