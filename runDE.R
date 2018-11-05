@@ -26,11 +26,15 @@ ddsAll$Vibrio <- relevel(ddsAll$Vibrio, ref="NoVibrio")
 ddsAll <- ddsAll[ rowSums(counts(ddsAll)) > 10, ]
 ##Run DESeq
 ddsAll <- DESeq(ddsAll)
+dfAll <- data.frame()
 for (result in resultsNames(ddsAll)){
+    if(result != 'Intercept'){
     res <- results(ddsAll, alpha=.05, name=result)
     dfRes <- as.data.frame(res)
     dfRes <- subset(subset(dfRes, padj < .05, select=c(log2FoldChange, padj)))
     dfRes$Factor <- result
+    dfAll <- rbind(dfAll, dfRes)
     write.csv(dfRes, file=paste0(result,".csv"))
+    }
 }
-  
+write.csv(dfAll, file="dfAll.csv")

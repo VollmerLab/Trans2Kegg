@@ -1,7 +1,10 @@
 library(dplyr)
 annot <- read.csv("annot.csv")
-de <- read.csv("dfVibrio.csv")
-colnames(de) <- c("Iteration_query.def", "log2FoldChange", "padj")
+#de <- read.csv("dfVibrio.csv")
+de <- read.csv("dfAll.csv")
+#de <- de[de$Factor == 'Vibrio_Vibrio_vs_NoVibrio',]
+colnames(de) <- c("Iteration_query.def", "log2FoldChange", "padj", "Factor")
+#colnames(de) <- c("Iteration_query.def", "log2FoldChange", "padj")
 annot$qCov <- (annot$Hsp_align.len - annot$Hsp_gaps)/annot$Hit_len
 annot <- subset(annot, qCov > .5 & Hsp_evalue < 1e-10, 
                 select=c("ko","Iteration_query.def", "Hsp_evalue",
@@ -21,5 +24,7 @@ covAndCount8 <- aggregate(qCov ~ Iteration_query.def,data=covAndCount7, max)
 covAndCount9 <- merge(covAndCount1, covAndCount8)
 #subset(annot, select=c("ko", "Iteration_query.def","Hsp_evalue", "qCov"))
 covAndCountDesc <- merge(covAndCount9, koDesc)
+head(de)
+head(covAndCountDesc)
 deCovAndCountDesc <- merge(de, covAndCountDesc)
 write.csv(deCovAndCountDesc, file="deCovAndCountDesc.csv")
