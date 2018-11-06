@@ -8,7 +8,7 @@ Authors@R: c(
     person("Steve", "Vollmer", email = "s.vollmer@northeastern.edu",
     role = "aut")
     )
-biocViews: Annotation, Software
+biocViews: Annotation, Software, KEGG
 Maintainer: Chuck Roesel <croesel@gmail.com>
 Description: A tool to simplify and standardize annotation of transcriptomes.
 License: GPL-3

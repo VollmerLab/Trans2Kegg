@@ -7,7 +7,7 @@
 mergePaths()
 }
 \value{
-Annotation results are written to deWithPathsAndDetails.csv,
+Annotation results are written to dePathsDetails.csv,
 countByClass.csv, countByPath.csv
 }
 \description{

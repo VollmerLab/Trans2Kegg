@@ -17,6 +17,7 @@ dfRefs.csv
 Get KEGG pathway information for annotated transcripts
 }
 \examples{
-filepath <- system.file("extdata", "deCovAndCountDesc.csv", package="Trans2Kegg")
+filepath <- system.file("extdata", "deCovAndCountDesc.csv", 
+package="Trans2Kegg")
 getPathways(filepath)
 }

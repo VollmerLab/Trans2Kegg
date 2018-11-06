@@ -3,7 +3,7 @@
 #' @import tidyr
 #' @importFrom utils read.csv write.csv
 #' @importFrom stats aggregate
-#' @return Annotation results are written to deWithPathsAndDetails.csv,
+#' @return Annotation results are written to dePathsDetails.csv,
 #' countByClass.csv, countByPath.csv
 #' @examples
 #' mergePaths()
@@ -18,13 +18,18 @@ mergePaths <- function(){
     deWithPaths <- unique(deWithPaths)
     pathDetails <- read.csv("dfPaths.csv")
     pathDetails <- subset(pathDetails, select=-c(X))
-    deWithPathsAndDetails <- merge(deWithPaths, pathDetails, by="id")
-    deWithPathsAndDetails$direction[deWithPathsAndDetails$log2FoldChange > 0] = 'Up'
-    deWithPathsAndDetails$direction[deWithPathsAndDetails$log2FoldChange < 0] = 'Down'
-    deWithPathsAndDetails <- separate(data = deWithPathsAndDetails, col = class, into = c("category", "class"), sep = ";")
-    write.csv(deWithPathsAndDetails, file="deWithPathsAndDetails.csv", row.names=FALSE)
-    countByClass <- aggregate(ko ~ Factor + category + class + direction, data=deWithPathsAndDetails, NROW)
+    dePathsDetails <- merge(deWithPaths, pathDetails, by="id")
+    dePathsDetails$direction[dePathsDetails$log2FoldChange > 0] = 'Up'
+    dePathsDetails$direction[dePathsDetails$log2FoldChange < 0] = 'Down'
+    dePathsDetails <- separate(data = dePathsDetails, 
+                                      col = class, into = c("category",
+                                                            "class"), sep = ";")
+    write.csv(dePathsDetails, file="dePathsDetails.csv", 
+              row.names=FALSE)
+    countByClass <- aggregate(ko ~ Factor + category + class + direction, 
+                              data=dePathsDetails, NROW)
     write.csv(countByClass, file="countByClass.csv", row.names=FALSE)
-    countByPath <- aggregate(ko ~ Factor + category + class + path + direction, data=deWithPathsAndDetails, NROW)
+    countByPath <- aggregate(ko ~ Factor + category + class + path + direction, 
+                             data=dePathsDetails, NROW)
     write.csv(countByPath, file="countByPath.csv", row.names=FALSE)
 }

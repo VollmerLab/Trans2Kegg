@@ -7,7 +7,8 @@
 #' @return Annotation results are written to dfPaths.csv, dfPathsKos.csv,
 #' dfRefs.csv
 #' @examples
-#' filepath <- system.file("extdata", "deCovAndCountDesc.csv", package="Trans2Kegg")
+#' filepath <- system.file("extdata", "deCovAndCountDesc.csv", 
+#' package="Trans2Kegg")
 #' getPathways(filepath)
 #' @export
 getPathways <- function(annotFile){
@@ -44,7 +45,8 @@ getPathways <- function(annotFile){
                         dfPathsKos <- rbind(dfPathKos, dfPathsKos)
                     }
                     if(length(class) > 0){  
-                        dfPath <- data.frame("id" = id, "class" = class,"path"=name)
+                        dfPath <- data.frame("id" = id, "class" = class,
+                                             "path"=name)
                         dfPaths <- rbind(dfPath, dfPaths)
                     }
                 }
