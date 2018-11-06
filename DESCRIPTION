@@ -20,7 +20,8 @@ Imports:
     Biostrings,
     annotate,
     utils,
-    stats
+    stats,
+    DESeq2
 Suggests: knitr, rmarkdown, RUnit, BiocGenerics
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0
