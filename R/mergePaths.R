@@ -18,13 +18,13 @@
 
 mergePaths <- function(covCount, pathKo, paths){
     deCovAndCountDesc <- read.csv(covCount)
-    deCovAndCountDesc <- subset(deCovAndCountDesc, select=-c(X))
+    #deCovAndCountDesc <- subset(deCovAndCountDesc, select=-c(X))
     dfPathsKos <- read.csv(pathKo)
-    dfPathsKos <- subset(dfPathsKos, select=-c(X))
+    #dfPathsKos <- subset(dfPathsKos, select=-c(X))
     deWithPaths <- merge(deCovAndCountDesc, dfPathsKos, by="ko")
     deWithPaths <- unique(deWithPaths)
     pathDetails <- read.csv(paths)
-    pathDetails <- subset(pathDetails, select=-c(X))
+    #pathDetails <- subset(pathDetails, select=-c(X))
     dePathsDetails <- merge(deWithPaths, pathDetails, by="id")
     dePathsDetails$direction[dePathsDetails$log2FoldChange > 0] = 'Up'
     dePathsDetails$direction[dePathsDetails$log2FoldChange < 0] = 'Down'

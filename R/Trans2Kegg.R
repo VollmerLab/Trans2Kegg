@@ -17,7 +17,6 @@
 #' @export
 annotateTranscripts <- function(accessions, refTransFile, outFile){
     refTrans <- readDNAStringSet(refTransFile)
-    print(refTransFile)
     rowNum <- 0
     accDone <- c()
     dfUniKegg <- data.frame()

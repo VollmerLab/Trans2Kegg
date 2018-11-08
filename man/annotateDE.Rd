@@ -8,9 +8,6 @@ annotateDE(ddsAll, transcriptFasta)
 }
 \arguments{
 \item{ddsAll}{DESeqDataSet to annotate}
-
-\item{transcriptFasta}{FASTA file of transcripts use for abundance 
-estimation}
 }
 \value{
 Annotation results are written to dfAll.csv and annot.csv
@@ -24,7 +21,6 @@ library(repmis)
 source_data(paste0("https://github.com/croesel/",
     "SampleData/blob/master/salmon.RData?raw=true"))
 samples <- system.file("extdata", "Samples.csv", package="Trans2Kegg")
-transcripts <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
 colData <- read.csv(samples, row.names=1)
 colData$Menthol <- gsub("Control","NoMenthol",colData$Menthol)
 colData$Vibrio <- gsub("Control","NoVibrio",colData$Vibrio)
@@ -36,5 +32,5 @@ ddsAll$Menthol <- relevel(ddsAll$Menthol, ref="NoMenthol")
 ddsAll$Vibrio <- relevel(ddsAll$Vibrio, ref="NoVibrio")
 ddsAll <- ddsAll[ rowSums(counts(ddsAll)) > 10, ]
 ddsAll <- DESeq(ddsAll)
-annotateDE(ddsAll,transcripts) 
+annotateDE(ddsAll) 
 }

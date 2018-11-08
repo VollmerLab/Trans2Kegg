@@ -53,7 +53,7 @@ getPathways <- function(annotFile){
             }
         }
     }
-    write.csv(dfPaths, file="dfPaths.csv")
-    write.csv(dfPathsKos, file="dfPathsKos.csv")
-    write.csv(dfRefs, file="dfRefs.csv")
+    write.csv(dfPaths, file="dfPaths.csv", row.names=FALSE)
+    write.csv(dfPathsKos, file="dfPathsKos.csv", row.names=FALSE)
+    write.csv(dfRefs, file="dfRefs.csv", row.names=FALSE)
 }

@@ -22,7 +22,8 @@ Imports:
     annotate,
     utils,
     stats,
-    DESeq2
+    DESeq2,
+    dplyr
 Suggests: knitr, rmarkdown, RUnit, BiocGenerics
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
