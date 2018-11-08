@@ -13,10 +13,11 @@
 #' @examples
 #' filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
 #' annotateTranscripts(c("KXJ29317.1"), filepath,
-#'  "annot.csv")
+#'     "annot.csv")
 #' @export
 annotateTranscripts <- function(accessions, refTransFile, outFile){
     refTrans <- readDNAStringSet(refTransFile)
+    print(refTransFile)
     rowNum <- 0
     accDone <- c()
     dfUniKegg <- data.frame()

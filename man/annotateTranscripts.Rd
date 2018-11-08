@@ -23,5 +23,5 @@ Annotate selected transcripts from FASTA file
 \examples{
 filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
 annotateTranscripts(c("KXJ29317.1"), filepath,
- "annot.csv")
+    "annot.csv")
 }

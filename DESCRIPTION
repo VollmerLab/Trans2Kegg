@@ -14,6 +14,7 @@ Description: A tool to simplify and standardize annotation of transcriptomes.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.6)
 Imports:
     tidyr,
     KEGGREST,
@@ -24,4 +25,4 @@ Imports:
     DESeq2
 Suggests: knitr, rmarkdown, RUnit, BiocGenerics
 VignetteBuilder: knitr
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

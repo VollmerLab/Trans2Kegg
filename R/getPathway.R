@@ -46,7 +46,7 @@ getPathways <- function(annotFile){
                     }
                     if(length(class) > 0){  
                         dfPath <- data.frame("id" = id, "class" = class,
-                                             "path"=name)
+                            "path"=name)
                         dfPaths <- rbind(dfPath, dfPaths)
                     }
                 }
