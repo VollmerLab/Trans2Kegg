@@ -2,7 +2,7 @@
 #' @name annotateTranscripts
 #' @import tidyr
 #' @import KEGGREST
-#' @import Biostrings
+#' @importFrom Biostrings readDNAStringSet
 #' @import annotate
 #' @importFrom utils read.csv write.csv write.table
 #' @param accessions A character vector of accessions from FASTA file to
@@ -11,9 +11,11 @@
 #' @param outFile csv output file for annotation results
 #' @return Annotation results are written to the csv file specified by outFile
 #' @examples
+#' \dontrun{
 #' filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
 #' annotateTranscripts(c("KXJ29317.1"), filepath,
 #'     "annot.csv")
+#' }
 #' @export
 annotateTranscripts <- function(accessions, refTransFile, outFile){
     refTrans <- readDNAStringSet(refTransFile)

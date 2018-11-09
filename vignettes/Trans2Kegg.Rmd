@@ -20,7 +20,7 @@ library(Biostrings)
 
 ## Vignette Info
 
-```{r}
+```{r eval=FALSE}
 transFile <- system.file("extdata", "transcriptSample.fa", package="Trans2Kegg")
 transIds <- c("rna3 gene=rfx6")
 library(Trans2Kegg)

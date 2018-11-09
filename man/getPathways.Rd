@@ -10,8 +10,7 @@ getPathways(annotFile)
 \item{annotFile}{csv output file from annotateTranscripts}
 }
 \value{
-Annotation results are written to dfPaths.csv, dfPathsKos.csv,
-dfRefs.csv
+Annotation results are written to dfPaths.csv, dfPathsKos.csv
 }
 \description{
 Get KEGG pathway information for annotated transcripts

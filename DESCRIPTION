@@ -23,6 +23,7 @@ Imports:
     utils,
     stats,
     DESeq2,
+    repmis,
     dplyr
 Suggests: knitr, rmarkdown, RUnit, BiocGenerics
 VignetteBuilder: knitr

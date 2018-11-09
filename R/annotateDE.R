@@ -1,6 +1,7 @@
 #' Get KEGG information for DE transcripts
 #' @name annotateDE
 #' @import DESeq2
+#' @import repmis
 #' @importFrom utils write.csv
 #' @param ddsAll DESeqDataSet to annotate
 #' @return Annotation results are written to dfAll.csv and annot.csv
@@ -24,7 +25,7 @@
 #' annotateDE(ddsAll) 
 #' @export
 
-annotateDE <- function(ddsAll, transcriptFasta){
+annotateDE <- function(ddsAll){
     dfAll <- data.frame()
     for (result in resultsNames(ddsAll)){
         if(result != 'Intercept'){

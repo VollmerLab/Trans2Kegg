@@ -1,7 +1,7 @@
 #' Merge DE, BLAST, KEGG Info and filter
 #' @name mergeAnnotations
-#' @import dplyr
 #' @importFrom utils read.csv write.csv
+#' @importFrom dplyr count
 #' @param annotFile csv output file from annotateTranscripts
 #' @return Annotation results are written to deCovAndCountDesc.csv.
 #' @examples

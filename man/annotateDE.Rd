@@ -4,7 +4,7 @@
 \alias{annotateDE}
 \title{Get KEGG information for DE transcripts}
 \usage{
-annotateDE(ddsAll, transcriptFasta)
+annotateDE(ddsAll)
 }
 \arguments{
 \item{ddsAll}{DESeqDataSet to annotate}
