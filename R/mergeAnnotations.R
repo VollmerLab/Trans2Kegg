@@ -11,6 +11,13 @@
 #' @export
 
 mergeAnnotations <- function(annotFile){
+    #These variables are defined in the header of the csv file read below.
+    #Defining here to avoid note.
+    ko <- ''
+    Iteration_query.def <- ''
+    Hsp_evalue <- 1
+    qCov <- 0
+    desc <- ''
     annot <- read.csv(annotFile)
     de <- read.csv("dfAll.csv")
     colnames(de) <- c("Iteration_query.def", "log2FoldChange", "padj", "Factor")

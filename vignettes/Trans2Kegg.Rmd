@@ -14,19 +14,32 @@ knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
 )
-library(Trans2Kegg)
-library(Biostrings)
 ```
 
 ## Vignette Info
 
-```{r eval=FALSE}
-transFile <- system.file("extdata", "transcriptSample.fa", package="Trans2Kegg")
-transIds <- c("rna3 gene=rfx6")
+```{r}
+outFile <- 'annot.csv'
 library(Trans2Kegg)
-annotateTranscripts(transIds, transFile, "annot.csv")
+#transFile <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
+transIds <- c("KXJ29331.1")
+annotateTranscripts(transIds, "aiptasia.fa", outFile)
+annot <- read.csv(outFile, stringsAsFactors=FALSE)
+head(annot)
 ```
-## Styles
 
-## Figures
+```{r}
+mergeAnnotations(outFile)
+```
+
+Query the KEGG API to obtain pathway information, and produce a table of pathway to ortholog
+mappings (Table 4), and pathway ID to pathway detail mappings (Table 5).
+
+```{r}
+#getPathways(outFile)
+```
+
+```{r}
+#mergePaths("deCovAndCountDesc.csv", "dfPathsKos.csv", "dfPaths.csv") 
+```
 

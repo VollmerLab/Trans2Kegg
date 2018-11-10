@@ -26,6 +26,9 @@
 #' @export
 
 annotateDE <- function(ddsAll){
+    #These fields are part of results in ddsAll. Defining here to avoid note.
+    padj <- 1
+    log2FoldChange <- 0 
     dfAll <- data.frame()
     for (result in resultsNames(ddsAll)){
         if(result != 'Intercept'){
