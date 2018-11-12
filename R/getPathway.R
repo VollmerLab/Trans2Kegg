@@ -19,18 +19,15 @@ getPathways <- function(annotFile){
     dfPathsKos <- data.frame("id" = c(), "ko" = c())
     if (file.exists("dfPaths.csv")) {
         dfPaths <- read.csv("dfPaths.csv", stringsAsFactors = FALSE)
-    }else{
-        write.csv(dfPaths, file="dfPaths.csv", row.names=TRUE)
-    }
+        print(dfPaths)
+    }    
     if (file.exists("dfDone.csv")) {
         dfDone <- read.csv("dfDone.csv", stringsAsFactors = FALSE)
-    }else{
-        write.csv(dfDone, file="dfDone.csv", row.names=TRUE)
-    } 
+        print(dfDone)
+    }
     if (file.exists("dfPathsKos.csv")){
         dfPathsKos <- read.csv("dfPathsKos.csv", stringsAsFactors = FALSE)
-    }else{
-        write.csv(dfPathsKos, file="dfPathsKos.csv", row.names=TRUE)
+        print(dfPathsKos)
     }
     kosLeft <- setdiff(koList, unique(dfDone$ko))
     for (deKo in kosLeft){
@@ -51,24 +48,25 @@ getPathways <- function(annotFile){
                     for (ko in koIds){
                         dfPathKo <- data.frame("id"=id, "ko"=koIds)
                         write.table(dfPathKo, file="dfPathsKos.csv", 
-                                    col.names=FALSE, append=TRUE, 
+                                    col.names=!file.exists("dfPathsKos.csv"), 
+                                    append=file.exists("dfPathsKos.csv"), 
                                     sep=',', row.names=FALSE)
-                        #dfPathsKos <- rbind(dfPathKos, dfPathsKo)
                     }
                 }
                 if(length(class) > 0){  
                     dfPath <- data.frame("id" = id, "class" = class,
                         "path"=name)
                     write.table(dfPath, file="dfPaths.csv", 
-                                col.names=FALSE, append=TRUE, 
+                                col.names=!file.exists("dfPaths.csv"), 
+                                append=file.exists("dfPaths.csv"),
                                 sep=',', row.names=FALSE)
-                    #dfPaths <- rbind(dfPath, dfPaths)
                 }
             }
         }
         dfKoDone<- data.frame("id" =deKo, "ko"=deKo)
         write.table(dfKoDone, file="dfDone.csv",
-            col.names=FALSE, append=TRUE,
+            col.names=!file.exists("dfDone.csv"), 
+            append=file.exists("dfDone.csv"),
             sep=',', row.names=FALSE)
     }
 }
