@@ -9,6 +9,7 @@
 #' be annotated
 #' @param refTransFile FASTA file of transcripts to be annotated
 #' @param outFile csv output file for annotation results
+#' @param evalue e-value cutoff for BLAST results
 #' @return Annotation results are written to the csv file specified by outFile
 #' @examples
 #' \dontrun{
@@ -17,7 +18,8 @@
 #'     "annot.csv")
 #' }
 #' @export
-annotateTranscripts <- function(accessions, refTransFile, outFile){
+annotateTranscripts <- function(accessions, refTransFile, 
+    outFile="annot.csv", evalue="1e-5"){
     refTrans <- readDNAStringSet(refTransFile)
     rowNum <- 0
     accDone <- c()
@@ -31,9 +33,12 @@ annotateTranscripts <- function(accessions, refTransFile, outFile){
     for (accession in accRemaining){
         transSeq <- refTrans[accession]
         seq <- as.character(transSeq)
-        blastResult <- tryCatch(blastSequences(paste0(">",accession,"\n", seq),
+        blastResult <- blastSequences(paste0(">",accession,"\n", seq),
                 database="swissprot", program="blastx",as="data.frame", 
-                expect=1e-5), error=function(e) print(accession))
+                expect=evalue)
+        #blastResult <- tryCatch(blastSequences(paste0(">",accession,"\n", seq),
+        #        database="swissprot", program="blastx",as="data.frame", 
+        #        expect=evalue), error=function(e) print(accession))
         if(is.data.frame(blastResult) & length(blastResult) > 0){
             blastResult <- subset(blastResult, select=c("Iteration_query-def",
                 "Iteration_query-len", "Hit_accession", "Hit_len", 
@@ -52,9 +57,10 @@ annotateTranscripts <- function(accessions, refTransFile, outFile){
                         if(length(names(ortho)) > 0){
                             if(!is.na(kegg)){
                             rowNum <- rowNum + 1
-                            newOrtho <- data.frame(row.names=kegg,
+                            newOrtho <- tryCatch(data.frame(row.names=kegg,
                                 "kegg"=kegg, "ko"=names(ortho),
-                                "desc"=ortho[names(ortho)])
+                                "desc"=ortho[names(ortho)]), 
+                                error=function(e) print(ortho))
                             uniToKO <- merge(newRow, newOrtho)
                             write.csv(uniToKO, file="uniToKO.csv")
                             blastToKO <- merge(uniToKO,blastResult, 

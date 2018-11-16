@@ -16,14 +16,16 @@
 #' mergePaths(covCount, pathKo, paths)
 #' @export
 
-mergePaths <- function(covCount, pathKo, paths){
-    deCovAndCountDesc <- read.csv(covCount)
+mergePaths <- function(covCount="deCovAndCountDesc.csv", 
+                       pathKo="dfPathsKos.csv", 
+                       paths="dfPaths.csv"){
+    deCovAndCountDesc <- unique(read.csv(covCount))
     #deCovAndCountDesc <- subset(deCovAndCountDesc, select=-c(X))
-    dfPathsKos <- read.csv(pathKo)
+    dfPathsKos <- unique(read.csv(pathKo))
     #dfPathsKos <- subset(dfPathsKos, select=-c(X))
     deWithPaths <- merge(deCovAndCountDesc, dfPathsKos, by="ko")
     deWithPaths <- unique(deWithPaths)
-    pathDetails <- read.csv(paths)
+    pathDetails <- unique(read.csv(paths))
     #pathDetails <- subset(pathDetails, select=-c(X))
     dePathsDetails <- merge(deWithPaths, pathDetails, by="id")
     dePathsDetails$direction[dePathsDetails$log2FoldChange > 0] = 'Up'
@@ -39,4 +41,7 @@ mergePaths <- function(covCount, pathKo, paths){
     countByPath <- aggregate(ko ~ Factor + category + class + path + direction, 
         data=dePathsDetails, NROW)
     write.csv(countByPath, file="countByPath.csv", row.names=FALSE)
+    write.csv(dfPathsKos, file=pathKo, row.names=FALSE)
+    write.csv(deCovAndCountDesc, file=covCount, row.names=FALSE)
+    write.csv(pathDetails, file=paths, row.names=FALSE)
 }

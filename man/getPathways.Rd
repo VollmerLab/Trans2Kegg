@@ -4,7 +4,7 @@
 \alias{getPathways}
 \title{Get KEGG pathway information for annotated transcripts}
 \usage{
-getPathways(annotFile)
+getPathways(annotFile = "deCovAndCountDesc.csv")
 }
 \arguments{
 \item{annotFile}{csv output file from annotateTranscripts}

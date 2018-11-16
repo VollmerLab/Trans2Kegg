@@ -4,7 +4,7 @@
 \alias{mergeAnnotations}
 \title{Merge DE, BLAST, KEGG Info and filter}
 \usage{
-mergeAnnotations(annotFile)
+mergeAnnotations(annotFile = "annot.csv")
 }
 \arguments{
 \item{annotFile}{csv output file from annotateTranscripts}

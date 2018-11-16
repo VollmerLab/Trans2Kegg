@@ -10,7 +10,7 @@
 #' mergeAnnotations(annot)
 #' @export
 
-mergeAnnotations <- function(annotFile){
+mergeAnnotations <- function(annotFile="annot.csv"){
     #These variables are defined in the header of the csv file read below.
     #Defining here to avoid note.
     ko <- ''

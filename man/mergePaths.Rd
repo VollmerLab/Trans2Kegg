@@ -4,7 +4,8 @@
 \alias{mergePaths}
 \title{Merge pathway information and summarize DE counts}
 \usage{
-mergePaths(covCount, pathKo, paths)
+mergePaths(covCount = "deCovAndCountDesc.csv",
+  pathKo = "dfPathsKos.csv", paths = "dfPaths.csv")
 }
 \arguments{
 \item{covCount}{csv output file from}

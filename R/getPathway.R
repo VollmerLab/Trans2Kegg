@@ -10,7 +10,7 @@
 #' package="Trans2Kegg")
 #' getPathways(filepath)
 #' @export
-getPathways <- function(annotFile){
+getPathways <- function(annotFile = "deCovAndCountDesc.csv"){
     annot <- read.csv(annotFile, stringsAsFactors = FALSE)
     annotNoNA <- na.omit(annot)
     koList <- unique(annotNoNA$ko)
@@ -19,15 +19,12 @@ getPathways <- function(annotFile){
     dfPathsKos <- data.frame("id" = c(), "ko" = c())
     if (file.exists("dfPaths.csv")) {
         dfPaths <- read.csv("dfPaths.csv", stringsAsFactors = FALSE)
-        print(dfPaths)
     }    
     if (file.exists("dfDone.csv")) {
         dfDone <- read.csv("dfDone.csv", stringsAsFactors = FALSE)
-        print(dfDone)
     }
     if (file.exists("dfPathsKos.csv")){
         dfPathsKos <- read.csv("dfPathsKos.csv", stringsAsFactors = FALSE)
-        print(dfPathsKos)
     }
     kosLeft <- setdiff(koList, unique(dfDone$ko))
     for (deKo in kosLeft){
