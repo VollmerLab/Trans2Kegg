@@ -24,7 +24,9 @@ Imports:
     stats,
     DESeq2,
     repmis,
-    dplyr
+    dplyr,
+    RCurl,
+    XML
 Suggests: knitr, rmarkdown, RUnit, BiocGenerics
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1

@@ -1,11 +1,10 @@
 #' Annotate DE transcripts using NCBI BLAST AMI
 #' @name annotateAws
 #' @import tidyr
-#' @import KEGGREST
-#' @import Rcurl
+#' @importFrom RCurl getURL
 #' @import XML
 #' @importFrom Biostrings readDNAStringSet writeXStringSet
-#' @importFrom utils read.csv write.csv write.table
+#' @importFrom utils read.csv write.csv write.table URLencode
 #' @param accessions A character vector of accessions from FASTA file to
 #' be annotated
 #' @param refTransFile FASTA file of transcripts to be annotated
@@ -15,14 +14,12 @@
 #' @param threads Number of threads to use for BLAST
 #' @return Annotation results are written to the csv file specified by outFile
 #' @examples
-#' \dontrun{
 #' instance <- 'i-007ad8d6b0e9981ec'
 #' dns <- 'ec2-52-67-171-31.sa-east-1.compute.amazonaws.com'
 #' filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
 #' annotateAws(c("KXJ29317.1"), filePath,"annot.csv", instance=instance, dns=dns, threads=4)
 #' annotateTranscripts(c("KXJ29317.1"), filepath,
 #'     "annot.csv")
-#' }
 #' @export
 annotateAws <- function(accessions, refTransFile,
                      outFile="annot.csv", instance, dns, threads){
@@ -38,7 +35,7 @@ annotateAws <- function(accessions, refTransFile,
         writeXStringSet(transSeqs, "deTrans.fa", append=FALSE, compress=FALSE, 
                    compression_level=NA, format="fasta")
         query <- readChar(fastaOut, file.info(fastaOut)$size)
-        blastResult <- blastSequencesAws(query,
+        blastResult <- .blastSequencesAws(query,
         database="swissprot",program="blastx", 
         as="data.frame", expect=1e-5,instance=instance,
         dns=dns, threads=threads)
@@ -47,7 +44,7 @@ annotateAws <- function(accessions, refTransFile,
                 "Iteration_query-len", "Hit_accession", "Hit_len", 
                 "Hsp_evalue", "Hsp_identity", "Hsp_gaps", "Hsp_align-len"))
             write.csv(blastResult, file="blastResult.csv")
-            annotateTranscriptsAws(blastResult, outFile)
+            getKegg(blastResult, outFile)
         }
         emptyRow <- data.frame(uniprot=NA, kegg = NA, ko=NA, desc=NA,
             Iteration_query.def=accession, Iteration_query.len=NA, Hit_len=NA,
@@ -59,7 +56,20 @@ annotateAws <- function(accessions, refTransFile,
     }       
 }
 
-annotateTranscriptsAws <- function(blastResult,
+#' Get KEGG Ortholog info for BLAST Results
+#' @name getKegg
+#' @import tidyr
+#' @import KEGGREST
+#' @importFrom utils read.csv write.csv write.table URLencode
+#' @param blastResult BLAST results from blastSequencesAws
+#' @param outFile csv output file for annotation results
+#' @return Annotation results are written to the csv file specified by outFile
+#' @examples
+#' filepath <- system.file("extdata", "blastResult.csv", package="Trans2Kegg")
+#' blastResult <- read.csv(filePath, stringsAsFactors=FALSE)
+#' getKegg(blastResult, "annot.csv")
+#' @export
+getKegg <- function(blastResult,
     outFile="annot.csv"){
     rowNum <- 0
     accDone <- c()
@@ -100,9 +110,14 @@ annotateTranscriptsAws <- function(blastResult,
     }
 }
 
-# Note: All functions below this line are based on source code
-# from annotate.
-# This subroutine was taken un-changed from annotate source.
+## Note: All functions below this line are based on source code
+## from annotate.
+## This subroutine was taken un-changed from annotate source.
+##
+
+#' BLAST Sequences to dataframe
+#' @name .blastSequencesToDataFrame
+#' @import XML
 .blastSequencesToDataFrame <- function(xml) {
     if (xpathSApply(xml, "count(//Hit)") == 0L) {
         message("'blastSequences' returned 0 matches")
@@ -177,7 +192,7 @@ annotateTranscriptsAws <- function(blastResult,
 # and modifications were added to support NCBI BLAST AMI.
 ## Using the REST-ish API described at
 ## http://www.ncbi.nlm.nih.gov/blast/Doc/node2.html
-blastSequencesAws <- function(x, database="nr",
+.blastSequencesAws <- function(x, database="nr",
                            hitListSize="10",
                            filter="L",
                            expect="10",
