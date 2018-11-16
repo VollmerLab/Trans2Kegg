@@ -24,15 +24,16 @@
 annotateAws <- function(accessions, refTransFile,
                      outFile="annot.csv", instance, dns, threads){
     transDone <- data.frame() 
+    fastaOut <- "deTrans.fa"
     if(file.exists(outFile)){
         transDone <- read.csv(outFile, stringsAsFactors=FALSE)$Iteration_query.def
     }
     transLeft <- setdiff(accessions, transDone)
     refTrans <- readDNAStringSet(refTransFile)
     for(accession in transLeft){
-        print(accession)
+        #print(accession)
         transSeqs <- refTrans[accession]
-        writeXStringSet(transSeqs, "deTrans.fa", append=FALSE, compress=FALSE, 
+        writeXStringSet(transSeqs, fastaOut, append=FALSE, compress=FALSE, 
                    compression_level=NA, format="fasta")
         query <- readChar(fastaOut, file.info(fastaOut)$size)
         blastResult <- .blastSequencesAws(query,
@@ -230,12 +231,12 @@ getKegg <- function(blastResult,
     post <- htmlParse(getURL(url0, followlocation=TRUE))
     
     x <- post[['string(//comment()[contains(., "QBlastInfoBegin")])']]
-    print(x)
+    #print(x)
     rid <- sub(".*RID = ([[:alnum:]]+).*", "\\1", x)
     rtoe <- as.integer(sub(".*RTOE = ([[:digit:]]+).*", "\\1", x))
-    #if(is.na(rtoe)){
-    #    rtoe <- 60
-    #}
+    if(is.na(rtoe)){
+        return(-1)
+    }
     result <- .tryParseResult(baseUrl, rid, rtoe, timeout)
     PARSE(result)
 }
