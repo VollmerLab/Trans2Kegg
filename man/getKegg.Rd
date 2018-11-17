@@ -19,6 +19,6 @@ Get KEGG Ortholog info for BLAST Results
 }
 \examples{
 filepath <- system.file("extdata", "blastResult.csv", package="Trans2Kegg")
-blastResult <- read.csv(filePath, stringsAsFactors=FALSE)
+blastResult <- read.csv(filepath, stringsAsFactors=FALSE)
 getKegg(blastResult, "annot.csv")
 }

@@ -17,8 +17,8 @@
 #' @export
 
 mergePaths <- function(covCount="deCovAndCountDesc.csv", 
-                       pathKo="dfPathsKos.csv", 
-                       paths="dfPaths.csv"){
+                    pathKo="dfPathsKos.csv", 
+                    paths="dfPaths.csv"){
     deCovAndCountDesc <- unique(read.csv(covCount))
     #deCovAndCountDesc <- subset(deCovAndCountDesc, select=-c(X))
     dfPathsKos <- unique(read.csv(pathKo))

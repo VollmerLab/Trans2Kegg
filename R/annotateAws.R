@@ -14,19 +14,25 @@
 #' @param threads Number of threads to use for BLAST
 #' @return Annotation results are written to the csv file specified by outFile
 #' @examples
-#' instance <- 'i-007ad8d6b0e9981ec'
-#' dns <- 'ec2-52-67-171-31.sa-east-1.compute.amazonaws.com'
+#' instance <- 'i-0eef3748ecac0a146'
+#' dns <- 'ec2-35-153-135-164.compute-1.amazonaws.com'
 #' filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
-#' annotateAws(c("KXJ29317.1"), filePath,"annot.csv", instance=instance, dns=dns, threads=4)
+#' annotateAws(c("KXJ29317.1"), filepath,"annot.csv", instance=instance, 
+#' dns=dns, threads=4)
 #' annotateTranscripts(c("KXJ29317.1"), filepath,
 #'     "annot.csv")
 #' @export
-annotateAws <- function(accessions, refTransFile,
-                     outFile="annot.csv", instance, dns, threads){
+annotateAws <- function(accessions, 
+                        refTransFile,
+                        outFile="annot.csv", 
+                        instance, 
+                        dns, 
+                        threads){
     transDone <- data.frame() 
     fastaOut <- "deTrans.fa"
     if(file.exists(outFile)){
-        transDone <- read.csv(outFile, stringsAsFactors=FALSE)$Iteration_query.def
+        transDone <- read.csv(outFile, 
+            stringsAsFactors=FALSE)$Iteration_query.def
     }
     transLeft <- setdiff(accessions, transDone)
     refTrans <- readDNAStringSet(refTransFile)
@@ -34,11 +40,11 @@ annotateAws <- function(accessions, refTransFile,
         #print(accession)
         transSeqs <- refTrans[accession]
         writeXStringSet(transSeqs, fastaOut, append=FALSE, compress=FALSE, 
-                   compression_level=NA, format="fasta")
+            compression_level=NA, format="fasta")
         query <- readChar(fastaOut, file.info(fastaOut)$size)
-        blastResult <- .blastSequencesAws(query,
+        blastResult <- blastSequencesAws(query,
         database="swissprot",program="blastx", 
-        as="data.frame", expect=1e-5,instance=instance,
+        fmt="data.frame", expect=1e-5,instance=instance,
         dns=dns, threads=threads)
         if(is.data.frame(blastResult) & length(blastResult) > 0){
             blastResult <- subset(blastResult, select=c("Iteration_query-def",
@@ -67,7 +73,7 @@ annotateAws <- function(accessions, refTransFile,
 #' @return Annotation results are written to the csv file specified by outFile
 #' @examples
 #' filepath <- system.file("extdata", "blastResult.csv", package="Trans2Kegg")
-#' blastResult <- read.csv(filePath, stringsAsFactors=FALSE)
+#' blastResult <- read.csv(filepath, stringsAsFactors=FALSE)
 #' getKegg(blastResult, "annot.csv")
 #' @export
 getKegg <- function(blastResult,
@@ -75,9 +81,8 @@ getKegg <- function(blastResult,
     rowNum <- 0
     accDone <- c()
     dfUniKegg <- data.frame()
-    #blastResult <- read.csv("blastResult.csv")
     uniprots <- unique(blastResult$Hit_accession)
-   for (uniprot in uniprots){
+    for (uniprot in uniprots){
         uniKegg <- keggConv("genes", paste0("up:", uniprot))
         if(length(uniKegg) > 0){
             newRow <- data.frame("uniprot"=uniprot, "kegg"=uniKegg)
@@ -111,15 +116,21 @@ getKegg <- function(blastResult,
     }
 }
 
-## Note: All functions below this line are based on source code
-## from annotate.
-## This subroutine was taken un-changed from annotate source.
-##
+# Note: All functions below this line are based on source code
+# from annotate.
+# R. Gentleman (2018). annotate: Annotation for microarrays. R package
+# version 1.61.0.
+# This subroutine was taken un-changed from annotate source because
+# it is not exported in annotate. This can be eliminated if AWS
+# option is incorporated into annotate.
+# Aws suffix added to avoid conflict with standard version
 
 #' BLAST Sequences to dataframe
-#' @name .blastSequencesToDataFrame
+#' @name .blastSequencesToDataFrameAws
 #' @import XML
-.blastSequencesToDataFrame <- function(xml) {
+#' @param xml XML BLAST results to be parsed
+#' @return Returns parsed BLAST results as dataframe
+.blastSequencesToDataFrameAws <- function(xml) {
     if (xpathSApply(xml, "count(//Hit)") == 0L) {
         message("'blastSequences' returned 0 matches")
         return(data.frame())
@@ -144,19 +155,34 @@ getKegg <- function(blastResult,
     df
 }
 
-#This subroutine was taken un-changed from annotate source
-.tryParseResult <- function(baseUrl, rid, rtoe, timeout) {
+# This subroutine was taken un-changed from annotate source
+# R. Gentleman (2018). annotate: Annotation for microarrays. R package
+# version 1.61.0.
+# This subroutine was taken un-changed from annotate source because
+# it is not exported in annotate. This can/will be eliminated
+# if AWS option is incorporated into annotate.
+# Aws suffix added to avoid conflict with standard version.
+
+#' Parse results from AWS BLAST
+#' @name .tryParseResultAws 
+#' @importFrom methods as
+#' @param baseUrl URL from which to retrieve response
+#' @param rid ID associated with BLAST response
+#' @param rtoe Estimated response time
+#' @param timeout Timeout value
+#' @return Returns BLAST results as XML
+.tryParseResultAws <- function(baseUrl, rid, rtoe, timeout) {
     message("estimated response time ", rtoe, " seconds")
     start <- Sys.time()
     end <- Sys.time() + timeout
     url <- sprintf("%s?CMD=Get&FORMAT_OBJECT=SearchInfo&RID=%s",
-                   baseUrl, rid)
+        baseUrl, rid)
     Sys.sleep(min(rtoe, timeout))
     repeat {
         elapsed <- as.double(Sys.time() - start, units="secs")
         result <- as(htmlParse(getURL(url, followlocation=TRUE),
-                               error = xmlErrorCumulator(immediate=FALSE)),
-                     "character")
+            error = xmlErrorCumulator(immediate=FALSE)),
+            "character")
 
         if (grepl("Status=FAILED", result))
             stop("BLAST search failed")
@@ -165,7 +191,7 @@ getKegg <- function(blastResult,
         else if (grepl("Status=READY", result)) {
             url <- sprintf("%s?RID=%s&FORMAT_TYPE=XML&CMD=Get", baseUrl, rid)
             result <- xmlParse(getURL(url, followlocation=TRUE),
-                               error = xmlErrorCumulator(immediate=FALSE))
+                error = xmlErrorCumulator(immediate=FALSE))
             return(result)
         } else if (grepl("Status=WAITING", result)) {
             message(sprintf("elapsed time %.0f seconds", elapsed))
@@ -185,48 +211,43 @@ getKegg <- function(blastResult,
             stop("BLAST search unknown response") 
     }
     msg <- sprintf("'blastSequences' timeout after %.0f seconds",
-                   elapsed)
+        elapsed)
     stop(msg, call.=FALSE)
 }
 
 # The majority of this subroutine was taken from annotate source, 
-# and modifications were added to support NCBI BLAST AMI.
-## Using the REST-ish API described at
-## http://www.ncbi.nlm.nih.gov/blast/Doc/node2.html
-.blastSequencesAws <- function(x, database="nr",
-                           hitListSize="10",
-                           filter="L",
-                           expect="10",
-                           program="blastn",
-                           timeout=40,
-                           as=c("DNAMultipleAlignment", "data.frame", "XML"),
-                           instance,
-                           dns,
-                           threads=8)
+# R. Gentleman (2018). annotate: Annotation for microarrays. R package
+# version 1.61.0.
+# Modifications were added to support NCBI BLAST AMI. Code is freely
+# available for incorporation into annotate if the author chooses to
+# do so. 
+# Using the REST-ish API described at
+# http://www.ncbi.nlm.nih.gov/blast/Doc/node2.html
+# Added instance and dns parameters to support AWS
+# Added Aws suffix to avoid conflict with standard version
+# Changed as to fmt to avoid conflict with function as
+blastSequencesAws <- function(x, database="nr",
+                                hitListSize="10",
+                                filter="L",
+                                expect="10",
+                                program="blastn",
+                                timeout=40,
+                                fmt=c("DNAMultipleAlignment", "data.frame", 
+                                    "XML"),
+                                instance,
+                                dns,
+                                threads=4)
 {
-    PARSE <- switch(match.arg(as),
-                    DNAMultipleAlignment=.blastSequencesToDNAMultipleAlignment,
-                    data.frame=.blastSequencesToDataFrame,
-                    XML=identity)
-    ## TODO: lots of argument checking and testing.  Also,
-    ## depending on which program string is used we need to make the correct
-    ## kind of object at the end (so blastn means DNAMultipleAlignment, and
-    ## blastp means AAMultipleAlignment etc.
 
-    ## So:
-    ## 1) get online values these parameters can be
-    ## 2) document those
-    ## 3) restrict their vals in the code here.
-    ## 4) for program, use this to determine what object is returned.
-    
-    ## assemble the query
-    #baseUrl <- "https://www.ncbi.nlm.nih.gov/blast/Blast.cgi"
-    #instance <- 'i-007ad8d6b0e9981ec'
-    #dns <- 'ec2-52-67-171-31.sa-east-1.compute.amazonaws.com'
+    PARSE <- switch(match.arg(fmt),
+                    data.frame=.blastSequencesToDataFrameAws,
+                    XML=identity)
+    # assemble the query from AWS instance and DNS
     baseUrl <- paste0("http://blast:",instance, "@", dns, "/cgi-bin/blast.cgi")
     query <- paste("QUERY=", URLencode(as.character(x)), "&DATABASE=",database,
-                   "&HITLIST_SIZE=",hitListSize,"&FILTER=",filter, "&NUM_THREADS=",threads,
-                   "&EXPECT=",expect,"&PROGRAM=",program, sep="")
+            "&HITLIST_SIZE=",hitListSize,"&FILTER=",filter,
+            "&NUM_THREADS=",threads, "&EXPECT=",expect,"&PROGRAM=",program, 
+            sep="")
     url0 <- sprintf("%s?%s&CMD=Put", baseUrl, query)
     post <- htmlParse(getURL(url0, followlocation=TRUE))
     
@@ -237,7 +258,7 @@ getKegg <- function(blastResult,
     if(is.na(rtoe)){
         return(-1)
     }
-    result <- .tryParseResult(baseUrl, rid, rtoe, timeout)
+    result <- .tryParseResultAws(baseUrl, rid, rtoe, timeout)
     PARSE(result)
 }
 
