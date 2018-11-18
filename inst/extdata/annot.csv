@@ -1,0 +1,17 @@
+uniprot,kegg,ko,desc,Iteration_query-def,Iteration_query-len,Hit_len,Hsp_evalue,Hsp_identity,Hsp_gaps,Hsp_align-len
+NA,NA,NA,NA,KXJ30207.1,NA,NA,NA,NA,NA,NA
+Q8C7R7,mmu:320995,K19521,regulatory factor X 6,KXJ30097.1,2593,927,2.1199E-43,83,1,133
+D2HNW6,aml:100476328,K19521,regulatory factor X 6,KXJ30097.1,2593,928,2.49759E-43,83,1,133
+Q8HWS3,hsa:222546,K19521,regulatory factor X 6,KXJ30097.1,2593,928,3.01217E-43,83,1,133
+Q7TNK1,mmu:71137,K09174,regulatory factor X 4,KXJ30097.1,2593,735,4.90631E-34,66,0,121
+A2BGA0,dre:403016,K09174,regulatory factor X 4,KXJ30097.1,2593,735,1.31351E-33,65,0,121
+Q33E94,hsa:5992,K09174,regulatory factor X 4,KXJ30097.1,2593,735,1.12013E-32,62,0,112
+Q0V9K5,xtr:779608,K09173,regulatory factor X 1/2/3,KXJ30097.1,2593,749,5.59303E-07,34,28,160
+B1WAV2,xtr:100144734,K09173,regulatory factor X 1/2/3,KXJ30097.1,2593,694,2.29431E-06,33,23,126
+P48381,mmu:19726,K09173,regulatory factor X 1/2/3,KXJ30097.1,2593,749,3.08834E-06,34,28,160
+"Q9CZ52","mmu:69538","K20909","anthrax toxin receptor","KXJ29317.1","2266","562","2.4156e-38","119","11","348"
+"Q0PMD2","rno:362393","K20909","anthrax toxin receptor","KXJ29317.1","2266","562","2.21326e-30","70","5","188"
+"Q9H6X2","hsa:84168","K20909","anthrax toxin receptor","KXJ29317.1","2266","564","2.55803e-30","70","5","188"
+"Q9H6X2","hsa:84168","K20909","anthrax toxin receptor","KXJ29317.1","2266","564","8.88355e-06","38","2","102"
+"Q6DFX2","mmu:71914","K20909","anthrax toxin receptor","KXJ29317.1","2266","487","3.42789e-30","125","67","410"
+"P58335","hsa:118429","K20909","anthrax toxin receptor","KXJ29317.1","2266","489","2.63802e-29","113","9","338"

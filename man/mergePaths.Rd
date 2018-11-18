@@ -4,15 +4,10 @@
 \alias{mergePaths}
 \title{Merge pathway information and summarize DE counts}
 \usage{
-mergePaths(covCount = "deCovAndCountDesc.csv",
-  pathKo = "dfPathsKos.csv", paths = "dfPaths.csv")
+mergePaths(prefix = "")
 }
 \arguments{
-\item{covCount}{csv output file from}
-
-\item{pathKo}{csv output file from}
-
-\item{paths}{csv output file from}
+\item{prefix}{File prefix for input files.}
 }
 \value{
 Annotation results are written to dePathsDetails.csv,
@@ -22,9 +17,8 @@ countByClass.csv, countByPath.csv
 Merge pathway information and summarize DE counts
 }
 \examples{
-covCount <- system.file("extdata", "deCovAndCountDesc.csv", 
+covCount <- system.file("extdata", "cvCnt.csv", 
     package="Trans2Kegg")
-pathKo <- system.file("extdata", "dfPathsKos.csv", package="Trans2Kegg")
-paths <- system.file("extdata", "dfPaths.csv", package="Trans2Kegg")
-mergePaths(covCount, pathKo, paths)
+prefix <- system.file("extdata/", package="Trans2Kegg")
+mergePaths(prefix=prefix)
 }

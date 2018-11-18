@@ -5,10 +5,10 @@
 #' @import XML
 #' @importFrom Biostrings readDNAStringSet writeXStringSet
 #' @importFrom utils read.csv write.csv write.table URLencode
-#' @param accessions A character vector of accessions from FASTA file to
+#' @param ids A character vector of accessions from FASTA file to
 #' be annotated
-#' @param refTransFile FASTA file of transcripts to be annotated
-#' @param outFile csv output file for annotation results
+#' @param fasta FASTA file of transcripts to be annotated
+#' @param out csv output file for annotation results
 #' @param instance Instance from Amazon EC2 running NCBI BLAST AMI
 #' @param dns DNS from Amazon EC2 running NCBI BLAST AMI
 #' @param threads Number of threads to use for BLAST
@@ -22,20 +22,15 @@
 #' annotateTranscripts(c("KXJ29317.1"), filepath,
 #'     "annot.csv")
 #' @export
-annotateAws <- function(accessions, 
-                        refTransFile,
-                        outFile="annot.csv", 
-                        instance, 
-                        dns, 
-                        threads){
+annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
     transDone <- data.frame() 
     fastaOut <- "deTrans.fa"
-    if(file.exists(outFile)){
-        transDone <- read.csv(outFile, 
+    if(file.exists(out)){
+        transDone <- read.csv(out, 
             stringsAsFactors=FALSE)$Iteration_query.def
     }
-    transLeft <- setdiff(accessions, transDone)
-    refTrans <- readDNAStringSet(refTransFile)
+    transLeft <- setdiff(ids, transDone)
+    refTrans <- readDNAStringSet(fasta)
     for(accession in transLeft){
         #print(accession)
         transSeqs <- refTrans[accession]
@@ -51,14 +46,14 @@ annotateAws <- function(accessions,
                 "Iteration_query-len", "Hit_accession", "Hit_len", 
                 "Hsp_evalue", "Hsp_identity", "Hsp_gaps", "Hsp_align-len"))
             write.csv(blastResult, file="blastResult.csv")
-            getKegg(blastResult, outFile)
+            getKegg(blastResult)
         }
         emptyRow <- data.frame(uniprot=NA, kegg = NA, ko=NA, desc=NA,
             Iteration_query.def=accession, Iteration_query.len=NA, Hit_len=NA,
             Hsp_evalue=NA, Hsp_identity=NA, Hsp_gaps = NA, Hsp_align.len=NA)
-        write.table(emptyRow, file=outFile,
-            col.names=!file.exists(outFile),
-            append=file.exists(outFile), sep=',', 
+        write.table(emptyRow, file=out,
+            col.names=!file.exists(out),
+            append=file.exists(out), sep=',', 
             row.names=FALSE)
     }       
 }

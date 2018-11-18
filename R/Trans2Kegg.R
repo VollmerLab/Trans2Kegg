@@ -5,10 +5,10 @@
 #' @importFrom Biostrings readDNAStringSet
 #' @import annotate
 #' @importFrom utils read.csv write.csv write.table
-#' @param accessions A character vector of accessions from FASTA file to
+#' @param ids A character vector of accessions from FASTA file to
 #' be annotated
-#' @param refTransFile FASTA file of transcripts to be annotated
-#' @param outFile csv output file for annotation results
+#' @param fasta FASTA file of transcripts to be annotated
+#' @param out csv output file for annotation results
 #' @param evalue e-value cutoff for BLAST results
 #' @return Annotation results are written to the csv file specified by outFile
 #' @examples
@@ -18,27 +18,26 @@
 #'     "annot.csv")
 #' }
 #' @export
-annotateTranscripts <- function(accessions, refTransFile, 
-    outFile="annot.csv", evalue="1e-5"){
-    refTrans <- readDNAStringSet(refTransFile)
+annotateTranscripts <- function(ids, fasta, out="annot.csv", evalue="1e-5"){
+    refTrans <- readDNAStringSet(fasta)
     rowNum <- 0
     accDone <- c()
     dfUniKegg <- data.frame()
-    if (file.exists(outFile)) {
-        annot <- read.csv(outFile, stringsAsFactors = FALSE)
+    if (file.exists(out)) {
+        annot <- read.csv(out, stringsAsFactors = FALSE)
         rowNum <- nrow(annot)
         accDone <- unique(annot$Iteration_query.def)
     }
-    accRemaining <- setdiff (accessions, accDone)
+    accRemaining <- setdiff (ids, accDone)
     for (accession in accRemaining){
         transSeq <- refTrans[accession]
         seq <- as.character(transSeq)
-        blastResult <- blastSequences(paste0(">",accession,"\n", seq),
-                database="swissprot", program="blastx",as="data.frame", 
-                expect=evalue)
-        #blastResult <- tryCatch(blastSequences(paste0(">",accession,"\n", seq),
+        #blastResult <- blastSequences(paste0(">",accession,"\n", seq),
         #        database="swissprot", program="blastx",as="data.frame", 
-        #        expect=evalue), error=function(e) print(accession))
+        #        expect=evalue)
+        blastResult <- tryCatch(blastSequences(paste0(">",accession,"\n", seq),
+                database="swissprot", program="blastx",as="data.frame", 
+                expect=evalue), error=function(e) print(accession))
         if(is.data.frame(blastResult) & length(blastResult) > 0){
             blastResult <- subset(blastResult, select=c("Iteration_query-def",
                 "Iteration_query-len", "Hit_accession", "Hit_len", 
@@ -65,7 +64,7 @@ annotateTranscripts <- function(accessions, refTransFile,
                             write.csv(uniToKO, file="uniToKO.csv")
                             blastToKO <- merge(uniToKO,blastResult, 
                                 by.x="uniprot", by.y="Hit_accession")
-                            write.table(blastToKO, file=outFile,
+                            write.table(blastToKO, file=out,
                                 col.names=(rowNum ==1), append=(rowNum !=1), 
                                 sep=',', row.names=FALSE)
                             }else{
@@ -80,7 +79,7 @@ annotateTranscripts <- function(accessions, refTransFile,
             emptyRow <- data.frame(uniprot=NA, kegg = NA, ko=NA, desc=NA,
             Iteration_query.def=accession, Iteration_query.len=NA, Hit_len=NA,
             Hsp_evalue=NA, Hsp_identity=NA, Hsp_gaps = NA, Hsp_align.len=NA)
-            write.table(emptyRow, file=outFile,
+            write.table(emptyRow, file=out,
             col.names=(rowNum ==1),
             append=(rowNum !=1), sep=',', row.names=FALSE)
         }

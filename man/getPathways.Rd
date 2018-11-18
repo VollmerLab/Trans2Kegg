@@ -4,19 +4,19 @@
 \alias{getPathways}
 \title{Get KEGG pathway information for annotated transcripts}
 \usage{
-getPathways(annotFile = "deCovAndCountDesc.csv")
+getPathways(annotFile = "cvCnt.csv")
 }
 \arguments{
 \item{annotFile}{csv output file from annotateTranscripts}
 }
 \value{
-Annotation results are written to dfPaths.csv, dfPathsKos.csv
+Annotation results are written to path.csv, pthKo.csv
 }
 \description{
 Get KEGG pathway information for annotated transcripts
 }
 \examples{
-filepath <- system.file("extdata", "deCovAndCountDesc.csv", 
+filepath <- system.file("extdata", "cvCnt.csv", 
 package="Trans2Kegg")
 getPathways(filepath)
 }

@@ -4,16 +4,15 @@
 \alias{annotateAws}
 \title{Annotate DE transcripts using NCBI BLAST AMI}
 \usage{
-annotateAws(accessions, refTransFile, outFile = "annot.csv", instance,
-  dns, threads)
+annotateAws(ids, fasta, out = "annot.csv", instance, dns, threads)
 }
 \arguments{
-\item{accessions}{A character vector of accessions from FASTA file to
+\item{ids}{A character vector of accessions from FASTA file to
 be annotated}
 
-\item{refTransFile}{FASTA file of transcripts to be annotated}
+\item{fasta}{FASTA file of transcripts to be annotated}
 
-\item{outFile}{csv output file for annotation results}
+\item{out}{csv output file for annotation results}
 
 \item{instance}{Instance from Amazon EC2 running NCBI BLAST AMI}
 

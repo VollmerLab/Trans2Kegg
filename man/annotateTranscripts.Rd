@@ -4,16 +4,15 @@
 \alias{annotateTranscripts}
 \title{Annotate selected transcripts from FASTA file}
 \usage{
-annotateTranscripts(accessions, refTransFile, outFile = "annot.csv",
-  evalue = "1e-5")
+annotateTranscripts(ids, fasta, out = "annot.csv", evalue = "1e-5")
 }
 \arguments{
-\item{accessions}{A character vector of accessions from FASTA file to
+\item{ids}{A character vector of accessions from FASTA file to
 be annotated}
 
-\item{refTransFile}{FASTA file of transcripts to be annotated}
+\item{fasta}{FASTA file of transcripts to be annotated}
 
-\item{outFile}{csv output file for annotation results}
+\item{out}{csv output file for annotation results}
 
 \item{evalue}{e-value cutoff for BLAST results}
 }

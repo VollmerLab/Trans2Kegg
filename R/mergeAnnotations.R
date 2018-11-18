@@ -3,7 +3,7 @@
 #' @importFrom utils read.csv write.csv
 #' @importFrom dplyr count
 #' @param annotFile csv output file from annotateTranscripts
-#' @return Annotation results are written to deCovAndCountDesc.csv.
+#' @return Annotation results are written to cvCnt.csv.
 #' @examples
 #' annot <- system.file("extdata", "annot.csv", 
 #'     package="Trans2Kegg")
@@ -40,5 +40,5 @@ mergeAnnotations <- function(annotFile="annot.csv"){
     covAndCount9 <- merge(covAndCount1, covAndCount8)
     covAndCountDesc <- merge(covAndCount9, koDesc)
     deCovAndCountDesc <- merge(de, covAndCountDesc)
-    write.csv(deCovAndCountDesc, file="deCovAndCountDesc.csv", row.names=FALSE)
+    write.csv(deCovAndCountDesc, file="cvCnt.csv", row.names=FALSE)
 }

@@ -91,7 +91,6 @@ log~2~ fold change, the adjusted p-value, and the comparison.
 library(dplyr)
 library(Trans2Kegg)
 library(knitr)
-library(kableExtra)
 ```
 
 
@@ -175,8 +174,7 @@ mergePaths()
 deAll <- read.csv("dfAll.csv", row.names=1)
 kable(head(deAll), caption = "Sample of deAll.csv, the output of function 
     AnnotateDE, which combines all comparisons from a DESeqDataSet
-    into a single file to facilitate annotation.", booktabs=TRUE) %>%
-    kable_styling(latex_options="hold_position")
+    into a single file to facilitate annotation.", booktabs=TRUE)
 ```
 
 ```{r Table2}
@@ -188,10 +186,10 @@ kable(head(annot, n= 20L),
 ```
 
 ```{r Table3}
-dfCovCount <- read.csv("deCovAndCountDesc.csv", stringsAsFactors=FALSE)
+dfCovCount <- read.csv("cvCnt.csv", stringsAsFactors=FALSE)
 dfCovCount$Factor <- gsub("_", " ", dfCovCount$Factor)
 kable(head(dfCovCount, n=20L), 
-    caption="Sample deCovAndCountDesc.csv output of mergePathways function.
+    caption="Sample cvCnt.csv output of mergePathways function.
     This table summarizes the annotation results. qCov is the mean query
     coverage for the species BLAST hits matching the KEGG ortholog.
     n is the number of species BLAST hits matching the KEGG ortholog.", 
@@ -199,16 +197,16 @@ kable(head(dfCovCount, n=20L),
 ```
 
 ```{r Table4}
-dfPathsKos <- read.csv("dfPathsKos.csv", stringsAsFactors=FALSE)
+dfPathsKos <- read.csv("pthKo.csv", stringsAsFactors=FALSE)
 kable(head(dfPathsKos, n=20L), 
-    caption="Sample dfPathsKos.csv output of getPathways function.", 
+    caption="Sample pthKo.csv output of getPathways function.", 
     booktab=TRUE, row.names=FALSE)
 ```
 
 ```{r Table5}
-dfPaths <- read.csv("dfPaths.csv", stringsAsFactors=FALSE)
+dfPaths <- read.csv("path.csv", stringsAsFactors=FALSE)
 kable(head(dfPaths, n=20L), 
-    caption="Sample dfPaths.csv output of getPathways function.", 
+    caption="Sample path.csv output of getPathways function.", 
     booktab=TRUE, row.names=FALSE)
 ```
 

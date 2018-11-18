@@ -10,7 +10,7 @@ mergeAnnotations(annotFile = "annot.csv")
 \item{annotFile}{csv output file from annotateTranscripts}
 }
 \value{
-Annotation results are written to deCovAndCountDesc.csv.
+Annotation results are written to cvCnt.csv.
 }
 \description{
 Merge DE, BLAST, KEGG Info and filter
