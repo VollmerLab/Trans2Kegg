@@ -18,29 +18,239 @@ knitr::opts_chunk$set(
 
 ## Vignette Info
 
-```{r}
-outFile <- 'annot.csv'
-library(Trans2Kegg)
-#transFile <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
-transIds <- c("KXJ29331.1")
-annotateTranscripts(transIds, "aiptasia.fa", outFile)
-annot <- read.csv(outFile, stringsAsFactors=FALSE)
-head(annot)
-```
+### Introduction
+
+Trans2Kegg annotates differential expression (DE) results to KEGG orthologs and
+pathways requiring only two inputs - a DESeqDataSet, and the transcriptome
+FASTA file to which RNA-Seq reads were aligned. Trans2Kegg extracts all
+comparisons from the DESeqDataSet and is therefore suitable for single-factor
+or multi-factor experiments. Two BLAST options are available - BLAST on NCBI
+servers, or BLAST on AWS using an NCBI BLAST AMI. The AWS interface speeds up
+the annotation process approximately 14-fold over the NCBI servers. NCBI BLAST
+AMI requires the user to have an AWS account and launch an EC2 instance using
+the latest NCBI BLAST image. Two parameters are required from the running
+instance - the instance ID and the DNS. 
+
+Trans2Kegg merges all comparisons from the DESeqDataSet into a single dataframe
+with an added column to indicate the comparison associated with each DE row.
+This dataframe is saved as dfAll.csv.  The IDs of DE genes (rownames of
+dfAll.csv) are passed to the annotateTranscripts function, which extracts IDs
+of DE genes from the DESeqDataSet, extracts the corresponding sequences from
+the transcriptome FASTA file, then aligns them to SwissProt using the
+blastSequences function of the BioConductor annotate package. Trans2Kegg then
+queries the KEGG API using the KEGGREST package to find KEGG ortholog matches
+for each of the SwissProt BLAST matches, and the results are written to the
+user-specified output file. We chose KEGG orthologs as the common set of gene
+identifiers to facilitate cross-species comparisons of DE results. The BLAST
+and KEGG steps return a list of multiple SwissProt species matches which will
+generally be associated with one to three KEGG ortholog matches.
+
+To filter these matches, Trans2Kegg first applies e-value and query coverage
+cutoffs. The default values are e-value less than 1e-10 and query coverage
+greater than 50%, but the user may optionally pass different cutoff parameters.
+After applying the e-value and coverage filters, Trans2Kegg then selects the
+KEGG ortholog with the greatest number of BLAST hits for each transcript, and
+for each KEGG ortholog the transcript with the greatest number of BLAST hits.
+Where the number of BLAST hits is equal, for each transcript the KEGG ortholog
+with the highest average query coverage is selected, and the transcript with
+the highest average coverage for each ortholog is selected. This reciprocal
+filtering process eliminates the duplicate DE counting that can occur with
+simple e-value BLAST cutoffs. The filtered BLAST hits are then merged with the
+DE data to produce deCovAndCountDesc.csv, a table of 1:1 best matches between
+transcripts and KEGG orthologs. 
+
+To associate orthologs with KEGG pathways, the getPathways function queries the
+KEGG API using KEGGREST for each of the DE orthologs, producing dfPathsKos.csv.
+To provide higher-level groupings of pathways like "Immune system" or "Signal
+transduction" getPathways also queries KEGG for each pathway with DE genes,
+producing dfPaths.csv. The mergePaths function merges and summarizes DE,
+ortholog, pathway, and pathway class information to provide
+up-regulated/down-regulated DE counts by pathway and pathway class,
+as well as producing a detail table of all merged results.
+
+Aligning transcripts via BLAST is time-consuming, so we allowed for the
+possibility that R scripts using this package may time-out or experience other
+network connectivity errors during the annotation process. Each BLAST hit is
+appended to annot.csv as soon as it is received. If the script times out or
+errors out and is restarted, it will start BLASTing where it left off.  The
+restart feature also ensures that if you change parameters - for example you
+start with a very restrictive DE p-value and fold change cutoff, then make it
+less stringent, the BLAST step only needs to annotate the additional DE genes,
+not re-annotate the entire list.
+
+### Identify DE genes
+
+The annotateDE function is a helper function that accepts a DESeqDataSet as
+input, and combines all comparisons into a single dataframe by adding a
+"Factor" column to indicate the comparison applicable to each row. The output
+table dfAll.csv includes the ID number associated with the gene, the
+log~2~ fold change, the adjusted p-value, and the comparison.  
 
 ```{r}
-mergeAnnotations(outFile)
+# Load the Trans2Kegg library
+library(dplyr)
+library(Trans2Kegg)
+library(knitr)
+library(kableExtra)
 ```
+
+
+```{r AnnotateDE, eval=FALSE}
+annotateDE(ddsAll)
+```
+
+### BLAST and get KEGG
+
+The annotateTranscript function requires three parameters - 1) a vector of
+accession numbers from the FASTA file, 2) the path to the FASTA file and 3) the
+output filename.
+
+```{r Annotate, eval=FALSE}
+deAll <- read.csv("dfAll.csv", row.names=1)
+# Get the IDs (rownames) from deAll.
+ids <- rownames(deAll)
+# Select a subset of rows for testing purposes
+ids2 <- head(ids, n=650)
+annotateTranscripts(ids2, "aiptasia.fa")
+```
+### Optional: Fast BLAST with AWS
+
+The annotation process can be sped up dramatically using NCBI BLAST AMI. To
+setup the AMI, first create an AWS account and login, select the EC2 link (Fig.
+2), search for NCBI within the public AMIs (Fig. 3). Check the box to the left
+of the most recent AMI (as of this writing dated April 11, 2018) and select
+launch from the Actions drop-down. Select the desired instance type. The type
+used for the performance tests was m4.2xlarge. Select defaults for other
+settings, with the exception of security group. Click "Add Rule" and select
+HTTP (Fig. 4). After launching the instance copy and paste the instance ID and
+DNS from the EC2 console (Fig. 1) to the instance and dns variables passed to
+annotateAws. The annotateAws function requires three parameters - IDs to
+annotate (ids2), FASTA file of transcripts (fastaFile), instance ID, and DNS
+ID. Optionally pass the threads parameter to change from the default of four
+threads.
+
+```{r AnnotateAWS, eval=FALSE}
+deAll <- read.csv("dfAll.csv", row.names=1)
+# Get the IDs (rownames) from deAll.
+ids <- rownames(deAll)
+# Select a subset of rows for testing purposes
+ids2 <- head(ids, n=550)
+# NOTE: instance and DNS show below are examples only. 
+# Users must launch their own NCBI BLAST AMI
+instance <- 'i-0eef3748ecac0a146'
+dns <- 'ec2-35-153-135-164.compute-1.amazonaws.com'
+annotateAws(ids2, "aiptasia.fa", instance=instance, dns=dns, threads=4)
+```
+
+### Merge Annotations
+
+Merge the BLAST and KEGG annotations with DE results, and filter to obtain 1:1
+associations between transcript IDs and KEGG orthologs (Table 3).
+
+```{r mergeAnnotations}
+mergeAnnotations()
+```
+
+### Get KEGG pathway information
 
 Query the KEGG API to obtain pathway information, and produce a table of
 pathway to ortholog mappings (Table 4), and pathway ID to pathway detail
 mappings (Table 5).
 
-```{r}
-#getPathways(outFile)
+```{r getPaths}
+getPathways()
 ```
 
-```{r}
-#mergePaths("deCovAndCountDesc.csv", "dfPathsKos.csv", "dfPaths.csv") 
+### Merge and summarize all annotations
+
+Merge the DE, KEGG ortholog, and pathway and provide summary counts.
+
+```{r mergePaths}
+mergePaths() 
+```
+### Sample Output
+
+
+```{r Table1}
+deAll <- read.csv("dfAll.csv", row.names=1)
+kable(head(deAll), caption = "Sample of deAll.csv, the output of function 
+    AnnotateDE, which combines all comparisons from a DESeqDataSet
+    into a single file to facilitate annotation.", booktabs=TRUE) %>%
+    kable_styling(latex_options="hold_position")
 ```
 
+```{r Table2}
+outFile <- "annot.csv"
+annot <- read.csv(outFile, stringsAsFactors=FALSE)
+kable(head(annot, n= 20L), 
+    caption="Sample annot.csv output of annotateTranscript and annotateAws 
+    functions.", booktab=TRUE)
+```
+
+```{r Table3}
+dfCovCount <- read.csv("deCovAndCountDesc.csv", stringsAsFactors=FALSE)
+dfCovCount$Factor <- gsub("_", " ", dfCovCount$Factor)
+kable(head(dfCovCount, n=20L), 
+    caption="Sample deCovAndCountDesc.csv output of mergePathways function.
+    This table summarizes the annotation results. qCov is the mean query
+    coverage for the species BLAST hits matching the KEGG ortholog.
+    n is the number of species BLAST hits matching the KEGG ortholog.", 
+    booktab=TRUE, row.names=FALSE)
+```
+
+```{r Table4}
+dfPathsKos <- read.csv("dfPathsKos.csv", stringsAsFactors=FALSE)
+kable(head(dfPathsKos, n=20L), 
+    caption="Sample dfPathsKos.csv output of getPathways function.", 
+    booktab=TRUE, row.names=FALSE)
+```
+
+```{r Table5}
+dfPaths <- read.csv("dfPaths.csv", stringsAsFactors=FALSE)
+kable(head(dfPaths, n=20L), 
+    caption="Sample dfPaths.csv output of getPathways function.", 
+    booktab=TRUE, row.names=FALSE)
+```
+
+```{r Table6}
+countByPath <- read.csv("countByPath.csv", stringsAsFactors=FALSE)
+# Replace _ with spaces in Factor to allow word-wrap within the column.
+countByPath$Factor <- gsub("_", " ", countByPath$Factor)
+# Subset to include only "Organismal Systems" category
+countByPathOrg <- subset(countByPath, category %in% 
+    c("Organismal Systems"))
+countByPathOrg <- arrange(countByPathOrg, class, path, direction)
+kable(head(countByPathOrg, n=15L), 
+    caption="Sample countByPath.csv output of mergePathways function.", 
+    booktab=TRUE, row.names=FALSE)
+
+```
+
+```{r Table7}
+# Read in countByClass.csv
+countByClass <- read.csv("countByClass.csv", stringsAsFactors=FALSE)
+# Replace _ with spaces in Factor to allow word-wrap within the column.
+countByClass$Factor <- gsub("_", " ", countByClass$Factor)
+# Subset to include only "Organismal Systems" category
+countByClassOrg <- subset(countByClass, category %in% 
+    c("Organismal Systems"))
+countByClassOrg <- arrange(countByClassOrg, class, direction)
+kable(head(countByClassOrg, n=20L), 
+    caption="Sample countByClass.csv output of mergePathways function.", 
+    booktab=TRUE, row.names=FALSE)
+```
+
+```{r Table8}
+# Read in dePathsDetails.csv
+deDetails <- read.csv("dePathsDetails.csv", stringsAsFactors=FALSE)
+# Replace _ with spaces in Factor to allow word-wrap within the column.
+deDetails$Factor <- gsub("_", " ", deDetails$Factor)
+# Subset genes with Immune system pathways
+deDetailsImmune <- subset(deDetails, class %in% c(" Immune system"))
+kable(head(deDetailsImmune, n=10L), 
+    caption="Sample dePathsDetails.csv output of mergePathways function, 
+    subset to show the first ten genes within Immune system.
+    The combinations of DE and KEGG information in dePathsDetails.csv 
+    facilitates subsetting and summarizing DE results", 
+    booktab=TRUE, row.names=FALSE)
+```
