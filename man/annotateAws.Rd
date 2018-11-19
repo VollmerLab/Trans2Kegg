@@ -30,8 +30,6 @@ Annotate DE transcripts using NCBI BLAST AMI
 instance <- 'i-0eef3748ecac0a146'
 dns <- 'ec2-35-153-135-164.compute-1.amazonaws.com'
 filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
-annotateAws(c("KXJ29317.1"), filepath,"annot.csv", instance=instance, 
+annotateAws(c("KXJ29331.1"), filepath,"annot.csv", instance=instance, 
 dns=dns, threads=4)
-annotateTranscripts(c("KXJ29317.1"), filepath,
-    "annot.csv")
 }

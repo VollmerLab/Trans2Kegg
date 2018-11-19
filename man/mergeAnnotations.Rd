@@ -4,10 +4,14 @@
 \alias{mergeAnnotations}
 \title{Merge DE, BLAST, KEGG Info and filter}
 \usage{
-mergeAnnotations(annotFile = "annot.csv")
+mergeAnnotations(annotFile = "annot.csv", cov = 0.5, e_val = 1e-10)
 }
 \arguments{
 \item{annotFile}{csv output file from annotateTranscripts}
+
+\item{cov}{Query coverage cutoff}
+
+\item{e_val}{e-value cutoff}
 }
 \value{
 Annotation results are written to cvCnt.csv.

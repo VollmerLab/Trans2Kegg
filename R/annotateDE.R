@@ -30,6 +30,7 @@ annotateDE <- function(ddsAll){
     padj <- 1
     log2FoldChange <- 0 
     dfAll <- data.frame()
+    # Get all DE results except Intercept, and "flatten" into a single file.
     for (result in resultsNames(ddsAll)){
         if(result != 'Intercept'){
             res <- results(ddsAll, alpha=.05, name=result)

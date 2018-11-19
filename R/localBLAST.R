@@ -13,6 +13,7 @@
 #' @export
 localBlast <- function(accessions, refTransFile, fastaOut="deTrans.fa"){ 
     refTrans <- readDNAStringSet(refTransFile)
+    # Create a FASTA file of selected IDs to BLAST locally
     for (accession in accessions){
         transSeq <- refTrans[accession]
         writeXStringSet(transSeq, fastaOut, append=TRUE, compress=FALSE, 

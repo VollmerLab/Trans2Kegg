@@ -17,26 +17,30 @@
 #' instance <- 'i-0eef3748ecac0a146'
 #' dns <- 'ec2-35-153-135-164.compute-1.amazonaws.com'
 #' filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
-#' annotateAws(c("KXJ29317.1"), filepath,"annot.csv", instance=instance, 
+#' annotateAws(c("KXJ29331.1"), filepath,"annot.csv", instance=instance, 
 #' dns=dns, threads=4)
-#' annotateTranscripts(c("KXJ29317.1"), filepath,
-#'     "annot.csv")
 #' @export
 annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
     transDone <- data.frame() 
     fastaOut <- "deTrans.fa"
+    # Check to see if BLAST already started.
     if(file.exists(out)){
         transDone <- read.csv(out, 
             stringsAsFactors=FALSE)$Iteration_query.def
     }
+    # If BLAST already started, what's left?
     transLeft <- setdiff(ids, transDone)
+    # Read transcriptome FASTA file
     refTrans <- readDNAStringSet(fasta)
     for(accession in transLeft){
-        #print(accession)
+        # Get sequences for transcripts remaining to be BLASTed
         transSeqs <- refTrans[accession]
+        # Write as FASTA file. initially saving as file and reloading
+        # To simplify debugging for any BLASTs that fail.
         writeXStringSet(transSeqs, fastaOut, append=FALSE, compress=FALSE, 
-            compression_level=NA, format="fasta")
+            compression_level=NA, format="fasta")        
         query <- readChar(fastaOut, file.info(fastaOut)$size)
+        # BLAST the sequence via AWS
         blastResult <- blastSequencesAws(query,
         database="swissprot",program="blastx", 
         fmt="data.frame", expect=1e-5,instance=instance,
@@ -45,12 +49,17 @@ annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
             blastResult <- subset(blastResult, select=c("Iteration_query-def",
                 "Iteration_query-len", "Hit_accession", "Hit_len", 
                 "Hsp_evalue", "Hsp_identity", "Hsp_gaps", "Hsp_align-len"))
+            # Write BLAST output for debugging purposes
             write.csv(blastResult, file="blastResult.csv")
+            # Get KEGG info for species-specific SwissProt matches
             getKegg(blastResult)
         }
+        # If no BLAST hits found, write empty row so it won't be 
+        # retried again.
         emptyRow <- data.frame(uniprot=NA, kegg = NA, ko=NA, desc=NA,
             Iteration_query.def=accession, Iteration_query.len=NA, Hit_len=NA,
             Hsp_evalue=NA, Hsp_identity=NA, Hsp_gaps = NA, Hsp_align.len=NA)
+        # If file exists, append, otherwise write with column headers.
         write.table(emptyRow, file=out,
             col.names=!file.exists(out),
             append=file.exists(out), sep=',', 
@@ -75,17 +84,18 @@ getKegg <- function(blastResult,
     outFile="annot.csv"){
     rowNum <- 0
     accDone <- c()
-    dfUniKegg <- data.frame()
-    uniprots <- unique(blastResult$Hit_accession)
+    #dfUniKegg <- data.frame()
+    uniprots <- unique(blastResult["Hit_accession"])
     for (uniprot in uniprots){
         uniKegg <- keggConv("genes", paste0("up:", uniprot))
         if(length(uniKegg) > 0){
             newRow <- data.frame("uniprot"=uniprot, "kegg"=uniKegg)
-            dfUniKegg <- rbind(dfUniKegg, newRow)
+            #dfUniKegg <- rbind(dfUniKegg, newRow)
+            # Get KEGG orthologs using KEGGREST
             for(kegg in newRow$kegg){
                 koDetail <- tryCatch(keggGet(kegg),
                     error=function(e) print(kegg))
-                ortho <- koDetail[[1]]$ORTHOLOGY
+                ortho <- koDetail[[1]]["ORTHOLOGY"]
                 if(length(names(ortho)) > 0){
                     if(!is.na(kegg)){
                         rowNum <- rowNum + 1
@@ -97,13 +107,14 @@ getKegg <- function(blastResult,
                         write.csv(uniToKO, file="uniToKO.csv")
                         blastToKO <- merge(uniToKO,blastResult, 
                             by.x="uniprot", by.y="Hit_accession")
+                        # Start new file with headers if first,
+                        # otherwise append.
                         write.table(blastToKO, file=outFile,
                             col.names=!file.exists(outFile), 
                             append=file.exists(outFile), 
                             sep=',', row.names=FALSE)
                     }else{
-                        print(ortho)
-                        return(-1)
+                        message("kegg was NA")
                     }
                 }
             }

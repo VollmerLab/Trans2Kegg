@@ -23,9 +23,7 @@ Annotation results are written to the csv file specified by outFile
 Annotate selected transcripts from FASTA file
 }
 \examples{
-\dontrun{
 filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
-annotateTranscripts(c("KXJ29317.1"), filepath,
+annotateTranscripts(c("KXJ29331.1"), filepath,
     "annot.csv")
-}
 }
