@@ -75,11 +75,6 @@ annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
 #' @param blastResult BLAST results from blastSequencesAws
 #' @param outFile csv output file for annotation results
 #' @return Annotation results are written to the csv file specified by outFile
-#' @examples
-#' filepath <- system.file("extdata", "blastResult.csv", package="Trans2Kegg")
-#' blastResult <- read.csv(filepath, stringsAsFactors=FALSE)
-#' getKegg(blastResult, "annot.csv")
-#' @export
 getKegg <- function(blastResult,
     outFile="annot.csv"){
     rowNum <- 0
@@ -122,14 +117,12 @@ getKegg <- function(blastResult,
     }
 }
 
-# Note: All functions below this line are based on source code
-# from annotate.
-# R. Gentleman (2018). annotate: Annotation for microarrays. R package
-# version 1.61.0.
-# This subroutine was taken un-changed from annotate source because
-# it is not exported in annotate. This can be eliminated if AWS
-# option is incorporated into annotate.
-# Aws suffix added to avoid conflict with standard version
+# Note: All functions below this line are based on source code from annotate.
+# (Gentleman 2018). annotate: Annotation for microarrays.  R package version
+# 1.61.0. This subroutine was taken un-changed from annotate source because it
+# is not exported in annotate. This can be eliminated if AWS option is
+# incorporated into annotate.  Aws suffix added to avoid conflict with standard
+# version
 
 #' BLAST Sequences to dataframe
 #' @name .blastSequencesToDataFrameAws
@@ -161,13 +154,12 @@ getKegg <- function(blastResult,
     df
 }
 
-# This subroutine was taken un-changed from annotate source
-# R. Gentleman (2018). annotate: Annotation for microarrays. R package
-# version 1.61.0.
-# This subroutine was taken un-changed from annotate source because
-# it is not exported in annotate. This can/will be eliminated
-# if AWS option is incorporated into annotate.
-# Aws suffix added to avoid conflict with standard version.
+# This subroutine was taken un-changed from annotate source R. Gentleman
+# (2018). annotate: Annotation for microarrays. R package version 1.61.0.  This
+# subroutine was taken un-changed from annotate source because it is not
+# exported in annotate. This can/will be eliminated if AWS option is
+# incorporated into annotate.  Aws suffix added to avoid conflict with standard
+# version.
 
 #' Parse results from AWS BLAST
 #' @name .tryParseResultAws 
@@ -221,13 +213,11 @@ getKegg <- function(blastResult,
     stop(msg, call.=FALSE)
 }
 
-# The majority of this subroutine was taken from annotate source, 
-# R. Gentleman (2018). annotate: Annotation for microarrays. R package
-# version 1.61.0.
-# Modifications were added to support NCBI BLAST AMI. Code is freely
-# available for incorporation into annotate if the author chooses to
-# do so. 
-# Using the REST-ish API described at
+# The majority of this subroutine was taken from annotate source, R. Gentleman
+# (2018). annotate: Annotation for microarrays. R package version 1.61.0.
+# Modifications were added to support NCBI BLAST AMI. Code is freely available
+# for incorporation into annotate if the author chooses to do so.  Using the
+# REST-ish API described at
 # http://www.ncbi.nlm.nih.gov/blast/Doc/node2.html
 # Added instance and dns parameters to support AWS
 # Added Aws suffix to avoid conflict with standard version

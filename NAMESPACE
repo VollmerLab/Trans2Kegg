@@ -3,7 +3,6 @@
 export(annotateAws)
 export(annotateDE)
 export(annotateTranscripts)
-export(getKegg)
 export(getPathways)
 export(localBlast)
 export(mergeAnnotations)
