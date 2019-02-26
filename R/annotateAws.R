@@ -83,14 +83,14 @@ getKegg <- function(blastResult,
     uniprots <- unique(blastResult["Hit_accession"])
     for (uniprot in uniprots){
         uniKegg <- keggConv("genes", paste0("up:", uniprot))
-        if(length(uniKegg) > 0){
+        if(length(uniKegg) > 0 & (length(uniKegg) == length(uniprot))){
             newRow <- data.frame("uniprot"=uniprot, "kegg"=uniKegg)
             #dfUniKegg <- rbind(dfUniKegg, newRow)
             # Get KEGG orthologs using KEGGREST
             for(kegg in newRow$kegg){
                 koDetail <- tryCatch(keggGet(kegg),
                     error=function(e) print(kegg))
-                ortho <- koDetail[[1]]["ORTHOLOGY"]
+                ortho <- koDetail[[1]]$ORTHOLOGY
                 if(length(names(ortho)) > 0){
                     if(!is.na(kegg)){
                         rowNum <- rowNum + 1

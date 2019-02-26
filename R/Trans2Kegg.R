@@ -46,11 +46,11 @@ annotateTranscripts <- function(ids, fasta, out="annot.csv", evalue="1e-5"){
             uniprots <- unique(blastResult["Hit_accession"])
             # Loop through SwissProt (uniprot) IDs to get KEGG /IDs
             for (uniprot in uniprots){
-                message(uniprot)
                 # Get KEGG ID for SwissProt ID
                 uniKegg <- keggConv("genes", paste0("up:", uniprot))
-                if(length(uniKegg) > 0){
+                if(length(uniKegg) > 0 & (length(uniprot) == length(uniKegg))){
                     newRow <- data.frame("uniprot"=uniprot, "kegg"=uniKegg)
+                    message(newRow)
                     dfUniKegg <- rbind(dfUniKegg, newRow)
                     for(kegg in newRow["kegg"]){
                         # Get KEGG orthologs for species-specific KEGG ID
