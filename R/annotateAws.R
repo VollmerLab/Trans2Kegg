@@ -14,18 +14,18 @@
 #' @param threads Number of threads to use for BLAST
 #' @return Annotation results are written to the csv file specified by outFile
 #' @examples
-#' instance <- 'i-0eef3748ecac0a146'
-#' dns <- 'ec2-35-153-135-164.compute-1.amazonaws.com'
+#' instance <- 'i-07da948c2d85b7388'
+#' dns <- 'ec2-54-175-9-203.compute-1.amazonaws.com'
 #' filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
-#' annotateAws(c("KXJ29331.1"), filepath,"annot.csv", instance=instance, 
-#' dns=dns, threads=4)
+#' annotateAws(c("KXJ29331.1"), filepath,"annot.csv", instance=instance,
+#' dns=dns, threads=2)
 #' @export
 annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
-    transDone <- data.frame() 
+    transDone <- data.frame()
     fastaOut <- "deTrans.fa"
     # Check to see if BLAST already started.
     if(file.exists(out)){
-        transDone <- read.csv(out, 
+        transDone <- read.csv(out,
             stringsAsFactors=FALSE)$Iteration_query.def
     }
     # If BLAST already started, what's left?
@@ -37,24 +37,24 @@ annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
         transSeqs <- refTrans[accession]
         # Write as FASTA file. initially saving as file and reloading
         # To simplify debugging for any BLASTs that fail.
-        writeXStringSet(transSeqs, fastaOut, append=FALSE, compress=FALSE, 
-            compression_level=NA, format="fasta")        
+        writeXStringSet(transSeqs, fastaOut, append=FALSE, compress=FALSE,
+            compression_level=NA, format="fasta")
         query <- readChar(fastaOut, file.info(fastaOut)$size)
         # BLAST the sequence via AWS
         blastResult <- blastSequencesAws(query,
-        database="swissprot",program="blastx", 
+        database="swissprot",program="blastx",
         fmt="data.frame", expect=1e-5,instance=instance,
         dns=dns, threads=threads)
         if(is.data.frame(blastResult) & length(blastResult) > 0){
             blastResult <- subset(blastResult, select=c("Iteration_query-def",
-                "Iteration_query-len", "Hit_accession", "Hit_len", 
+                "Iteration_query-len", "Hit_accession", "Hit_len",
                 "Hsp_evalue", "Hsp_identity", "Hsp_gaps", "Hsp_align-len"))
             # Write BLAST output for debugging purposes
             write.csv(blastResult, file="blastResult.csv")
             # Get KEGG info for species-specific SwissProt matches
             getKegg(blastResult)
         }
-        # If no BLAST hits found, write empty row so it won't be 
+        # If no BLAST hits found, write empty row so it won't be
         # retried again.
         emptyRow <- data.frame(uniprot=NA, kegg = NA, ko=NA, desc=NA,
             Iteration_query.def=accession, Iteration_query.len=NA, Hit_len=NA,
@@ -62,9 +62,9 @@ annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
         # If file exists, append, otherwise write with column headers.
         write.table(emptyRow, file=out,
             col.names=!file.exists(out),
-            append=file.exists(out), sep=',', 
+            append=file.exists(out), sep=',',
             row.names=FALSE)
-    }       
+    }
 }
 
 #' Get KEGG Ortholog info for BLAST Results
@@ -96,17 +96,17 @@ getKegg <- function(blastResult,
                         rowNum <- rowNum + 1
                         newOrtho <- tryCatch(data.frame(row.names=kegg,
                             "kegg"=kegg, "ko"=names(ortho),
-                            "desc"=ortho[names(ortho)]), 
+                            "desc"=ortho[names(ortho)]),
                             error=function(e) print(ortho))
                         uniToKO <- merge(newRow, newOrtho)
                         write.csv(uniToKO, file="uniToKO.csv")
-                        blastToKO <- merge(uniToKO,blastResult, 
+                        blastToKO <- merge(uniToKO,blastResult,
                             by.x="uniprot", by.y="Hit_accession")
                         # Start new file with headers if first,
                         # otherwise append.
                         write.table(blastToKO, file=outFile,
-                            col.names=!file.exists(outFile), 
-                            append=file.exists(outFile), 
+                            col.names=!file.exists(outFile),
+                            append=file.exists(outFile),
                             sep=',', row.names=FALSE)
                     }else{
                         message("kegg was NA")
@@ -162,7 +162,7 @@ getKegg <- function(blastResult,
 # version.
 
 #' Parse results from AWS BLAST
-#' @name .tryParseResultAws 
+#' @name .tryParseResultAws
 #' @importFrom methods as
 #' @param baseUrl URL from which to retrieve response
 #' @param rid ID associated with BLAST response
@@ -206,7 +206,7 @@ getKegg <- function(blastResult,
             }
             Sys.sleep(10)
         } else
-            stop("BLAST search unknown response") 
+            stop("BLAST search unknown response")
     }
     msg <- sprintf("'blastSequences' timeout after %.0f seconds",
         elapsed)
@@ -228,7 +228,7 @@ blastSequencesAws <- function(x, database="nr",
                                 expect="10",
                                 program="blastn",
                                 timeout=40,
-                                fmt=c("DNAMultipleAlignment", "data.frame", 
+                                fmt=c("DNAMultipleAlignment", "data.frame",
                                     "XML"),
                                 instance,
                                 dns,
@@ -242,11 +242,11 @@ blastSequencesAws <- function(x, database="nr",
     baseUrl <- paste0("http://blast:",instance, "@", dns, "/cgi-bin/blast.cgi")
     query <- paste("QUERY=", URLencode(as.character(x)), "&DATABASE=",database,
             "&HITLIST_SIZE=",hitListSize,"&FILTER=",filter,
-            "&NUM_THREADS=",threads, "&EXPECT=",expect,"&PROGRAM=",program, 
+            "&NUM_THREADS=",threads, "&EXPECT=",expect,"&PROGRAM=",program,
             sep="")
     url0 <- sprintf("%s?%s&CMD=Put", baseUrl, query)
     post <- htmlParse(getURL(url0, followlocation=TRUE))
-    
+
     x <- post[['string(//comment()[contains(., "QBlastInfoBegin")])']]
     #print(x)
     rid <- sub(".*RID = ([[:alnum:]]+).*", "\\1", x)
