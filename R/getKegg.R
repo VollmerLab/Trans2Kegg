@@ -6,6 +6,7 @@
 #' @param blastResult BLAST results from blastSequencesAws
 #' @param outFile csv output file for annotation results
 #' @return Annotation results are written to the csv file specified by outFile
+#' @export
 getKegg <- function(blastResult,
     outFile="annot.csv"){
     rowNum <- 0
