@@ -84,13 +84,12 @@ annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
         message("'blastSequences' returned 0 matches")
         return(data.frame())
     }
-
     iter <- xml["//Iteration"]
-    iterlen <- sapply(iter, xpathSApply, "count(.//Hsp)")
+    iterlen <- vapply(iter, xpathSApply, double(1), "count(.//Hsp)")
     iterdf <- xmlToDataFrame(iter, stringsAsFactors=FALSE)
 
     hit <- xml["//Hit"]
-    hitlen <- sapply(hit, xpathSApply, "count(.//Hsp)")
+    hitlen <- vapply(hit, xpathSApply, double(1), "count(.//Hsp)")
     hitdf <- xmlToDataFrame(hit, stringsAsFactors=FALSE)
     hitdf <- hitdf[, names(hitdf) != "Hit_hsps", drop=FALSE]
 
