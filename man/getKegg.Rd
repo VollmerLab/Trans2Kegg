@@ -17,3 +17,8 @@ Annotation results are written to the csv file specified by outFile
 \description{
 Get KEGG Ortholog info for BLAST Results
 }
+\examples{
+outFile <- 'annot2.csv'
+blastResult <- read.csv("blastResult.csv")
+getKegg(blastResult, outFile)
+}

@@ -35,7 +35,7 @@ annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
     for(accession in transLeft){
         # Get sequences for transcripts remaining to be BLASTed
         transSeqs <- refTrans[accession]
-        # Write as FASTA file. initially saving as file and reloading
+        # Write as FASTA file. Initially saving as file and reloading
         # To simplify debugging for any BLASTs that fail.
         writeXStringSet(transSeqs, fastaOut, append=FALSE, compress=FALSE,
             compression_level=NA, format="fasta")
@@ -69,9 +69,9 @@ annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
 
 # Note: All functions below this line are based on source code from annotate.
 # (Gentleman 2018). annotate: Annotation for microarrays.  R package version
-# 1.61.0. This subroutine was taken un-changed from annotate source because it
+# 1.61.0. This subroutine was taken unchanged from annotate source because it
 # is not exported in annotate. This can be eliminated if AWS option is
-# incorporated into annotate.  Aws suffix added to avoid conflict with standard
+# incorporated into annotate.  AWS suffix added to avoid conflict with standard
 # version
 
 #' BLAST Sequences to dataframe

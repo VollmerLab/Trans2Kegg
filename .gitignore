@@ -10,3 +10,5 @@
 !*.Rmd
 !*.html
 !*.md
+!*.log
+!*.err
