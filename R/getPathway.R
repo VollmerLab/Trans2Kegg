@@ -13,9 +13,9 @@
 getPathways <- function(annotFile = "cvCnt.csv"){
     # These were going to be params, but Roxygen kept
     # putting non-standard indents and causing NOTEs
-    # in BiocCheck because param line longer than 80
     pthKo <- "pthKo.csv"
     path <- "path.csv"
+    # in BiocCheck because param line longer than 80
     done <- "dfDone.csv"
     # Read file of match counts and mean query coverage for each
     # query/ko pair.
@@ -51,40 +51,50 @@ getPathways <- function(annotFile = "cvCnt.csv"){
             pathsLeft <- setdiff(uniquePathways, dfPaths$id)
             for(uniquePathway in pathsLeft){
                 # Get pathway details
-                pathwayDetails <- keggGet(uniquePathway)
-                for (pathwayDetail in pathwayDetails){
-                    # Get fields we want
-                    class <- pathwayDetail$CLASS
-                    name <- pathwayDetail$NAME
-                    id <- names(pathwayDetail$PATHWAY_MAP)
-                    kos <- pathwayDetail$ORTHOLOGY
-                    koDescriptions <- unname(kos)
-                    koIds <- names(kos)
-                    for (ko in koIds){
-                        # Append all ko/pathway associations
-                        dfPathKo <- data.frame("id"=id, "ko"=koIds)
-                        write.table(dfPathKo, file=pthKo, 
-                                    col.names=!file.exists(pthKo), 
-                                    append=file.exists(pthKo), 
-                                    sep=',', row.names=FALSE)
-                    }
-                }
-                if(length(class) > 0){ 
-                    # Append pathway details 
-                    dfPath <- data.frame("id" = id, "class" = class,
-                        "path"=name)
-                    write.table(dfPath, file=path, 
-                                col.names=!file.exists(path), 
-                                append=file.exists(path),
-                                sep=',', row.names=FALSE)
-                }
+                getPathDetails(uniquePathway, pthKo, path)
             }
         }
         # Write to "done" list in case of restart
         dfKoDone<- data.frame("id" =deKo, "ko"=deKo)
-        write.table(dfKoDone, file=done,
-            col.names=!file.exists(done), 
-            append=file.exists(done),
-            sep=',', row.names=FALSE)
+        write.table(dfKoDone, file=done, col.names=!file.exists(done), 
+            append=file.exists(done), sep=',', row.names=FALSE)
     }
-}
+}                
+
+#' Get KEGG pathway details for one path
+#' @name getPathDetails
+#' @import KEGGREST
+#' @importFrom utils write.csv
+#' @importFrom stats na.omit
+#' @param uniquePathway KEGG pathway ID
+#' @param pthKo Output file for path to KO mapping
+#' @param path Output file for path details
+#' @return Annotation results are written to path.csv, pthKo.csv
+#' @examples
+#' getPathDetails("ko04621", "pthKo.csv", "path.csv")
+#' @export
+getPathDetails <- function(uniquePathway, pthKo, path) {
+    pathwayDetails <- keggGet(uniquePathway)
+    for (pathwayDetail in pathwayDetails){
+        # Get fields we want
+        class <- pathwayDetail$CLASS
+        name <- pathwayDetail$NAME
+        id <- names(pathwayDetail$PATHWAY_MAP)
+        kos <- pathwayDetail$ORTHOLOGY
+        koDescriptions <- unname(kos)
+        koIds <- names(kos)
+        for (ko in koIds){
+            # Append all ko/pathway associations
+            dfPathKo <- data.frame("id"=id, "ko"=koIds)
+            write.table(dfPathKo, file=pthKo, 
+                col.names=!file.exists(pthKo), append=file.exists(pthKo), 
+                sep=',', row.names=FALSE)
+        }
+    }
+    if(length(class) > 0){ 
+        # Append pathway details 
+        dfPath <- data.frame("id" = id, "class" = class, "path"=name)
+        write.table(dfPath, file=path, col.names=!file.exists(path), 
+            append=file.exists(path), sep=',', row.names=FALSE)
+    }
+} 
