@@ -7,8 +7,6 @@
 #' @return Annotation results are written to dePathsDetails.csv,
 #' countByClass.csv, countByPath.csv
 #' @examples
-#' covCount <- system.file("extdata", "cvCnt.csv", 
-#'     package="Trans2Kegg")
 #' prefix <- system.file("extdata/", package="Trans2Kegg")
 #' mergePaths(prefix=prefix)
 #' @export

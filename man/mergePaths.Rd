@@ -17,8 +17,6 @@ countByClass.csv, countByPath.csv
 Merge pathway information and summarize DE counts
 }
 \examples{
-covCount <- system.file("extdata", "cvCnt.csv", 
-    package="Trans2Kegg")
 prefix <- system.file("extdata/", package="Trans2Kegg")
 mergePaths(prefix=prefix)
 }
