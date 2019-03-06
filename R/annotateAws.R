@@ -1,5 +1,5 @@
 #' Annotate DE transcripts using NCBI BLAST AMI
-#' @name annotateAws
+#' @name annotateAWS
 #' @import tidyr
 #' @importFrom RCurl getURL
 #' @import XML
@@ -17,10 +17,10 @@
 #' instance <- 'i-07da948c2d85b7388'
 #' dns <- 'ec2-54-175-9-203.compute-1.amazonaws.com'
 #' filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
-#' annotateAws(c("KXJ29331.1"), filepath,"annot.csv", instance=instance,
+#' annotateAWS(c("KXJ29331.1"), filepath,"annot.csv", instance=instance,
 #' dns=dns, threads=2)
 #' @export
-annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
+annotateAWS <- function(ids, fasta, out="annot.csv", instance, dns, threads){
     transDone <- data.frame()
     fastaOut <- "deTrans.fa"
     # Check to see if BLAST already started.
@@ -41,7 +41,7 @@ annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
             compression_level=NA, format="fasta")
         query <- readChar(fastaOut, file.info(fastaOut)$size)
         # BLAST the sequence via AWS
-        blastResult <- blastSequencesAws(query,
+        blastResult <- blastSequencesAWS(query,
         database="swissprot",program="blastx",
         fmt="data.frame", expect=1e-5,instance=instance,
         dns=dns, threads=threads)
@@ -75,21 +75,21 @@ annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
 # version
 
 #' BLAST Sequences to dataframe
-#' @name .blastSequencesToDataFrameAws
+#' @name .blastSequencesToDataFrameAWS
 #' @import XML
 #' @param xml XML BLAST results to be parsed
 #' @return Returns parsed BLAST results as dataframe
-.blastSequencesToDataFrameAws <- function(xml) {
+.blastSequencesToDataFrameAWS <- function(xml) {
     if (xpathSApply(xml, "count(//Hit)") == 0L) {
         message("'blastSequences' returned 0 matches")
         return(data.frame())
     }
     iter <- xml["//Iteration"]
-    iterlen <- vapply(iter, xpathSApply, double(1), "count(.//Hsp)")
+    iterlen <- vapply(iter, xpathSApply,double(1), "count(.//Hsp)")
     iterdf <- xmlToDataFrame(iter, stringsAsFactors=FALSE)
 
     hit <- xml["//Hit"]
-    hitlen <- vapply(hit, xpathSApply, double(1), "count(.//Hsp)")
+    hitlen <- vapply(hit, xpathSApply,double(1), "count(.//Hsp)")
     hitdf <- xmlToDataFrame(hit, stringsAsFactors=FALSE)
     hitdf <- hitdf[, names(hitdf) != "Hit_hsps", drop=FALSE]
 
@@ -171,7 +171,7 @@ annotateAws <- function(ids, fasta, out="annot.csv", instance, dns, threads){
 # Added instance and dns parameters to support AWS
 # Added Aws suffix to avoid conflict with standard version
 # Changed as to fmt to avoid conflict with function as
-blastSequencesAws <- function(x, database="nr",
+blastSequencesAWS <- function(x, database="nr",
                                 hitListSize="10",
                                 filter="L",
                                 expect="10",
@@ -185,7 +185,7 @@ blastSequencesAws <- function(x, database="nr",
 {
 
     PARSE <- switch(match.arg(fmt),
-                    data.frame=.blastSequencesToDataFrameAws,
+                    data.frame=.blastSequencesToDataFrameAWS,
                     XML=identity)
     # assemble the query from AWS instance and DNS
     baseUrl <- paste0("http://blast:",instance, "@", dns, "/cgi-bin/blast.cgi")
@@ -197,7 +197,6 @@ blastSequencesAws <- function(x, database="nr",
     post <- htmlParse(getURL(url0, followlocation=TRUE))
 
     x <- post[['string(//comment()[contains(., "QBlastInfoBegin")])']]
-    #print(x)
     rid <- sub(".*RID = ([[:alnum:]]+).*", "\\1", x)
     rtoe <- as.integer(sub(".*RTOE = ([[:digit:]]+).*", "\\1", x))
     if(is.na(rtoe)){
