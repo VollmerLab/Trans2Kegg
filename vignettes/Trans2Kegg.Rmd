@@ -1,6 +1,9 @@
 ---
 title: "Annotating Transcriptomes with Trans2Kegg"
-author: "Charles Roesel"
+bibliography: bibliography.bib
+author: 
+- "Charles Roesel"
+- "Steve Vollmer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -20,30 +23,34 @@ knitr::opts_chunk$set(
 
 ### Introduction
 
-Trans2Kegg annotates differential expression (DE) results to KEGG orthologs and
-pathways requiring only two inputs - a DESeqDataSet, and the transcriptome
-FASTA file to which RNA-Seq reads were aligned. Trans2Kegg extracts all
-comparisons from the DESeqDataSet and is therefore suitable for single-factor
-or multi-factor experiments. Two BLAST options are available - BLAST on NCBI
-servers, or BLAST on AWS using an NCBI BLAST AMI. The AWS interface speeds up
-the annotation process approximately 14-fold over the NCBI servers. NCBI BLAST
-AMI requires the user to have an AWS account and launch an EC2 instance using
-the latest NCBI BLAST image. Two parameters are required from the running
-instance - the instance ID and the DNS. 
+Trans2Kegg annotates differential expression (DE) results to KEGG
+[@kanehisa_new_2019; @kanehisa_kegg:_2017; @kanehisa_kegg:_2000] orthologs and
+pathways requiring only two inputs - a DESeqDataSet [@love_moderated_2014], and
+the transcriptome FASTA file to which RNA-Seq reads were aligned. Trans2Kegg
+extracts all comparisons from the DESeqDataSet and is therefore suitable for
+single-factor or multi-factor experiments. Two BLAST [@altschul_basic_1990;
+@noauthor_database_2016] options are available - BLAST on NCBI servers, or
+BLAST on AWS using an NCBI BLAST AMI. The AWS interface speeds up the
+annotation process approximately 14-fold over the NCBI servers. NCBI BLAST AMI
+requires the user to have an AWS account and launch an EC2 instance using the
+latest NCBI BLAST image. Two parameters are required from the running instance
+- the instance ID and the DNS. 
 
 Trans2Kegg merges all comparisons from the DESeqDataSet into a single dataframe
 with an added column to indicate the comparison associated with each DE row.
-This dataframe is saved as dfAll.csv.  The IDs of DE genes (rownames of
-dfAll.csv) are passed to the annotateTranscripts function, which extracts IDs
-of DE genes from the DESeqDataSet, extracts the corresponding sequences from
-the transcriptome FASTA file, then aligns them to SwissProt using the
-blastSequences function of the BioConductor annotate package. Trans2Kegg then
-queries the KEGG API using the KEGGREST package to find KEGG ortholog matches
-for each of the SwissProt BLAST matches, and the results are written to the
-user-specified output file. We chose KEGG orthologs as the common set of gene
-identifiers to facilitate cross-species comparisons of DE results. The BLAST
-and KEGG steps return a list of multiple SwissProt species matches which will
-generally be associated with one to three KEGG ortholog matches.
+This dataframe is saved as `dfAll.csv`.  The IDs of DE genes (rownames of
+`dfAll.csv`) are passed to the `annotateAWS` function, which extracts IDs of DE
+genes from the DESeqDataSet, extracts the corresponding sequences from the
+transcriptome FASTA file, then aligns them to SwissProt
+[@uniprotconsortium_uniprot:_2018] using the blastSequences function of the
+BioConductor annotate [@gentleman_annotate:_2018] package. Trans2Kegg then
+queries the KEGG API using the KEGGREST [@tenenbaum_keggrest:_2018] package to
+find KEGG ortholog matches for each of the SwissProt BLAST matches, and the
+results are written to the user-specified output file. We chose KEGG orthologs
+as the common set of gene identifiers to facilitate cross-species comparisons
+of DE results. The BLAST and KEGG steps return a list of multiple SwissProt
+species matches which will generally be associated with one to three KEGG
+ortholog matches.
 
 To filter these matches, Trans2Kegg first applies e-value and query coverage
 cutoffs. The default values are e-value less than 1e-10 and query coverage
@@ -56,22 +63,22 @@ with the highest average query coverage is selected, and the transcript with
 the highest average coverage for each ortholog is selected. This reciprocal
 filtering process eliminates the duplicate DE counting that can occur with
 simple e-value BLAST cutoffs. The filtered BLAST hits are then merged with the
-DE data to produce deCovAndCountDesc.csv, a table of 1:1 best matches between
+DE data to produce `deCovAndCountDesc.csv`, a table of 1:1 best matches between
 transcripts and KEGG orthologs. 
 
-To associate orthologs with KEGG pathways, the getPathways function queries the
-KEGG API using KEGGREST for each of the DE orthologs, producing dfPathsKos.csv.
-To provide higher-level groupings of pathways like "Immune system" or "Signal
-transduction" getPathways also queries KEGG for each pathway with DE genes,
-producing dfPaths.csv. The mergePaths function merges and summarizes DE,
-ortholog, pathway, and pathway class information to provide
-up-regulated/down-regulated DE counts by pathway and pathway class,
-as well as producing a detail table of all merged results.
+To associate orthologs with KEGG pathways, the `getPathways` function queries
+the KEGG API using KEGGREST for each of the DE orthologs, producing
+`dfPathsKos.csv`.  To provide higher-level groupings of pathways like "Immune
+system" or "Signal transduction" getPathways also queries KEGG for each pathway
+with DE genes, producing `dfPaths.csv`. The `mergePaths` function merges and
+summarizes DE, ortholog, pathway, and pathway class information to provide
+up-regulated/down-regulated DE counts by pathway and pathway class, as well as
+producing a detail table of all merged results.
 
 Aligning transcripts via BLAST is time-consuming, so we allowed for the
 possibility that R scripts using this package may time-out or experience other
 network connectivity errors during the annotation process. Each BLAST hit is
-appended to annot.csv as soon as it is received. If the script times out or
+appended to `annot.csv` as soon as it is received. If the script times out or
 errors out and is restarted, it will start BLASTing where it left off.  The
 restart feature also ensures that if you change parameters - for example you
 start with a very restrictive DE p-value and fold change cutoff, then make it
@@ -80,10 +87,10 @@ not re-annotate the entire list.
 
 ### Identify DE genes
 
-The annotateDE function is a helper function that accepts a DESeqDataSet as
+The `annotateDE` function is a helper function that accepts a DESeqDataSet as
 input, and combines all comparisons into a single dataframe by adding a
 "Factor" column to indicate the comparison applicable to each row. The output
-table dfAll.csv includes the ID number associated with the gene, the
+table `dfAll.csv` includes the ID number associated with the gene, the
 log~2~ fold change, the adjusted p-value, and the comparison.  
 
 ```{r}
@@ -91,6 +98,7 @@ log~2~ fold change, the adjusted p-value, and the comparison.
 library(dplyr)
 library(Trans2Kegg)
 library(knitr)
+library(tidyr)
 ```
 
 
@@ -109,8 +117,8 @@ deAll <- read.csv("dfAll.csv", row.names=1)
 # Get the IDs (rownames) from deAll.
 ids <- rownames(deAll)
 # Select a subset of rows for testing purposes
-ids2 <- head(ids, n=650)
-annotateTranscripts(ids2, "aiptasia.fa")
+ids2 <- head(ids, n=10)
+annotateNCBI(ids2, "aiptasia.fa")
 ```
 ### Optional: Fast BLAST with AWS
 
@@ -128,17 +136,17 @@ annotate (ids2), FASTA file of transcripts (fastaFile), instance ID, and DNS
 ID. Optionally pass the threads parameter to change from the default of four
 threads.
 
-```{r AnnotateAWS, eval=FALSE}
+```{r AnnotateAWS, eval=TRUE, message=FALSE, warning=FALSE}
 deAll <- read.csv("dfAll.csv", row.names=1)
 # Get the IDs (rownames) from deAll.
 ids <- rownames(deAll)
 # Select a subset of rows for testing purposes
-ids2 <- head(ids, n=550)
+ids2 <- head(ids, n=200)
 # NOTE: instance and DNS show below are examples only. 
 # Users must launch their own NCBI BLAST AMI
-instance <- 'i-0eef3748ecac0a146'
-dns <- 'ec2-35-153-135-164.compute-1.amazonaws.com'
-annotateAws(ids2, "aiptasia.fa", instance=instance, dns=dns, threads=4)
+instance <- 'i-07da948c2d85b7388'
+dns <- 'ec2-54-175-9-203.compute-1.amazonaws.com'
+annotateAWS(ids2, "aiptasia.fa", instance=instance, dns=dns, threads=2)
 ```
 
 ### Merge Annotations
@@ -252,3 +260,5 @@ kable(head(deDetailsImmune, n=10L),
     facilitates subsetting and summarizing DE results", 
     booktab=TRUE, row.names=FALSE)
 ```
+
+## References
