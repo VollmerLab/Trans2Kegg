@@ -12,3 +12,5 @@
 !*.md
 !*.log
 !*.err
+!*.bib
+.Rproj.user

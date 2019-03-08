@@ -93,7 +93,7 @@ input, and combines all comparisons into a single dataframe by adding a
 table `dfAll.csv` includes the ID number associated with the gene, the
 log~2~ fold change, the adjusted p-value, and the comparison.  
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Load the Trans2Kegg library
 library(dplyr)
 library(Trans2Kegg)
@@ -136,7 +136,7 @@ annotate (ids2), FASTA file of transcripts (fastaFile), instance ID, and DNS
 ID. Optionally pass the threads parameter to change from the default of four
 threads.
 
-```{r AnnotateAWS, eval=TRUE, message=FALSE, warning=FALSE}
+```{r AnnotateAWS, eval=FALSE, message=FALSE, warning=FALSE}
 deAll <- read.csv("dfAll.csv", row.names=1)
 # Get the IDs (rownames) from deAll.
 ids <- rownames(deAll)
@@ -154,7 +154,7 @@ annotateAWS(ids2, "aiptasia.fa", instance=instance, dns=dns, threads=2)
 Merge the BLAST and KEGG annotations with DE results, and filter to obtain 1:1
 associations between transcript IDs and KEGG orthologs (Table 3).
 
-```{r mergeAnnotations}
+```{r mergeAnnotations, eval=FALSE}
 mergeAnnotations()
 ```
 
@@ -164,7 +164,7 @@ Query the KEGG API to obtain pathway information, and produce a table of
 pathway to ortholog mappings (Table 4), and pathway ID to pathway detail
 mappings (Table 5).
 
-```{r getPaths}
+```{r getPaths, eval=FALSE}
 getPathways()
 ```
 
@@ -172,20 +172,20 @@ getPathways()
 
 Merge the DE, KEGG ortholog, and pathway and provide summary counts.
 
-```{r mergePaths}
+```{r mergePaths, eval=FALSE}
 mergePaths() 
 ```
 ### Sample Output
 
 
-```{r Table1}
+```{r Table1, eval=FALSE}
 deAll <- read.csv("dfAll.csv", row.names=1)
 kable(head(deAll), caption = "Sample of deAll.csv, the output of function 
     AnnotateDE, which combines all comparisons from a DESeqDataSet
     into a single file to facilitate annotation.", booktabs=TRUE)
 ```
 
-```{r Table2}
+```{r Table2, eval=FALSE}
 outFile <- "annot.csv"
 annot <- read.csv(outFile, stringsAsFactors=FALSE)
 kable(head(annot, n= 20L), 
@@ -193,7 +193,7 @@ kable(head(annot, n= 20L),
     functions.", booktab=TRUE)
 ```
 
-```{r Table3}
+```{r Table3, eval=FALSE}
 dfCovCount <- read.csv("cvCnt.csv", stringsAsFactors=FALSE)
 dfCovCount$Factor <- gsub("_", " ", dfCovCount$Factor)
 kable(head(dfCovCount, n=20L), 
@@ -204,21 +204,21 @@ kable(head(dfCovCount, n=20L),
     booktab=TRUE, row.names=FALSE)
 ```
 
-```{r Table4}
+```{r Table4, eval=FALSE}
 dfPathsKos <- read.csv("pthKo.csv", stringsAsFactors=FALSE)
 kable(head(dfPathsKos, n=20L), 
     caption="Sample pthKo.csv output of getPathways function.", 
     booktab=TRUE, row.names=FALSE)
 ```
 
-```{r Table5}
+```{r Table5, eval=FALSE}
 dfPaths <- read.csv("path.csv", stringsAsFactors=FALSE)
 kable(head(dfPaths, n=20L), 
     caption="Sample path.csv output of getPathways function.", 
     booktab=TRUE, row.names=FALSE)
 ```
 
-```{r Table6}
+```{r Table6, eval=FALSE}
 countByPath <- read.csv("countByPath.csv", stringsAsFactors=FALSE)
 # Replace _ with spaces in Factor to allow word-wrap within the column.
 countByPath$Factor <- gsub("_", " ", countByPath$Factor)
@@ -232,7 +232,7 @@ kable(head(countByPathOrg, n=15L),
 
 ```
 
-```{r Table7}
+```{r Table7, eval=FALSE}
 # Read in countByClass.csv
 countByClass <- read.csv("countByClass.csv", stringsAsFactors=FALSE)
 # Replace _ with spaces in Factor to allow word-wrap within the column.
@@ -246,7 +246,7 @@ kable(head(countByClassOrg, n=20L),
     booktab=TRUE, row.names=FALSE)
 ```
 
-```{r Table8}
+```{r Table8, eval=FALSE}
 # Read in dePathsDetails.csv
 deDetails <- read.csv("dePathsDetails.csv", stringsAsFactors=FALSE)
 # Replace _ with spaces in Factor to allow word-wrap within the column.

@@ -1,6 +1,10 @@
 
   Running ‘runTests.R’
 
+See
+  ‘/home/croesel/Trans2Kegg.Rcheck/00check.log’
+for details.
+
 
 This is BiocCheck version 1.19.26. BiocCheck is a work in progress.
 Output and severity of issues may change. Installing package...
@@ -34,7 +38,8 @@ Output and severity of issues may change. Installing package...
 * Checking DESCRIPTION/NAMESPACE consistency...
 * Checking vignette directory...
     This is a software package
-    # of chunks: 16, # of eval=FALSE: 2 (12%)
+    # of chunks: 16, # of eval=FALSE: 14 (87%)
+    * WARNING: Evaluate more vignette chunks.
 * Checking library calls...
 * Checking for library/require of Trans2Kegg...
 * Checking coding practice...
@@ -57,7 +62,7 @@ Output and severity of issues may change. Installing package...
 
 Summary:
 ERROR count: 0
-WARNING count: 0
+WARNING count: 1
 NOTE count: 1
 For detailed information about these checks, see the BiocCheck
 vignette, available at

@@ -14,7 +14,6 @@ Subdirectory 'R' contains invalid file names:
 * using R Under development (unstable) (2019-03-03 r76192)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * using session charset: UTF-8
-* using option ‘--no-build-vignettes’
 * checking for file ‘Trans2Kegg/DESCRIPTION’ ... OK
 * checking extension type ... Package
 * this is package ‘Trans2Kegg’ version ‘0.99.0’
@@ -24,7 +23,11 @@ Subdirectory 'R' contains invalid file names:
 * checking if this is a source package ... OK
 * checking if there is a namespace ... OK
 * checking for executable files ... OK
-* checking for hidden files and directories ... OK
+* checking for hidden files and directories ... NOTE
+Found the following hidden files and directories:
+  vignettes/.RData
+These were most likely included in error. See section ‘Package
+structure’ in the ‘Writing R Extensions’ manual.
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
 * checking whether package ‘Trans2Kegg’ can be installed ... OK
@@ -68,7 +71,7 @@ Subdirectory 'R' contains invalid file names:
 * checking running R code from vignettes ...
    ‘Trans2Kegg.Rmd’ using ‘UTF-8’ ... OK
  NONE
-* checking re-building of vignette outputs ... SKIPPED
+* checking re-building of vignette outputs ... OK
 * checking PDF version of manual ... OK
 * DONE
-Status: OK
+Status: 1 NOTE
