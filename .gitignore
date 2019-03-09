@@ -10,7 +10,9 @@
 !*.Rmd
 !*.html
 !*.md
-!*.log
 !*.err
 !*.bib
 .Rproj.user
+Trans2Kegg.Rproj
+.dropbox
+
