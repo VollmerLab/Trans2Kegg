@@ -12,6 +12,7 @@
 !*.md
 !*.err
 !*.bib
+!*.Rd
 .Rproj.user
 Trans2Kegg.Rproj
 .dropbox
