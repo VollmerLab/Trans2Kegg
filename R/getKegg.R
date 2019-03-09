@@ -7,12 +7,10 @@
 #' @param outFile csv output file for annotation results
 #' @return Annotation results are written to the csv file specified by outFile
 #' @examples
-#' \dontrun{
 #' outFile <- 'annot2.csv'
 #' blastFile <- system.file("extdata", "blastResult.csv", package="Trans2Kegg")
 #' blastResult <- read.csv(blastFile)
 #' getKegg(blastResult, outFile)
-#' }
 #' @export
 getKegg <- function(blastResult,
     outFile="annot.csv"){
