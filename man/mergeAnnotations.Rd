@@ -20,7 +20,9 @@ Annotation results are written to cvCnt.csv.
 Merge DE, BLAST, KEGG Info and filter
 }
 \examples{
+\dontrun{
 annot <- system.file("extdata", "annot.csv", 
     package="Trans2Kegg")
 mergeAnnotations(annot)
+}
 }

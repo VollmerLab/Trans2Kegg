@@ -14,11 +14,14 @@
 #' @param threads Number of threads to use for BLAST
 #' @return Annotation results are written to the csv file specified by outFile
 #' @examples
+#' \dontrun{
 #' instance <- 'i-07da948c2d85b7388'
 #' dns <- 'ec2-54-175-9-203.compute-1.amazonaws.com'
-#' filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
-#' annotateAWS(c("KXJ29331.1"), filepath,"annot.csv", instance=instance,
+#' fasta <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
+#' annot <- system.file("extdata", "annot.csv", package="Trans2Kegg")
+#' annotateAWS(c("KXJ29331.1"), fasta,annot, instance=instance,
 #' dns=dns, threads=2)
+#' }
 #' @export
 annotateAWS <- function(ids, fasta, out="annot.csv", instance, dns, threads){
     transDone <- data.frame()

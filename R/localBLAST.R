@@ -8,8 +8,10 @@
 #' @param fastaOut Output file for DE sequences
 #' @return DE Sequences are written to specified FASTA file
 #' @examples
+#' \dontrun{
 #' filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
 #' localBlast(c("KXJ29317.1"), filepath)
+#' }
 #' @export
 localBlast <- function(accessions, refTransFile, fastaOut="deTrans.fa"){ 
     refTrans <- readDNAStringSet(refTransFile)

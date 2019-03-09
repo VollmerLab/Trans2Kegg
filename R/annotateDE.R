@@ -6,6 +6,7 @@
 #' @param ddsAll DESeqDataSet to annotate
 #' @return Annotation results are written to dfAll.csv and annot.csv
 #' @examples
+#' \dontrun{
 #' library(DESeq2)
 #' library(repmis)
 #' source_data(paste0("https://github.com/croesel/",
@@ -23,6 +24,7 @@
 #' ddsAll <- ddsAll[ rowSums(counts(ddsAll)) > 10, ]
 #' ddsAll <- DESeq(ddsAll)
 #' annotateDE(ddsAll) 
+#' }
 #' @export
 
 annotateDE <- function(ddsAll){

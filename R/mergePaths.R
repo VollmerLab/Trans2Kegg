@@ -7,8 +7,10 @@
 #' @return Annotation results are written to dePathsDetails.csv,
 #' countByClass.csv, countByPath.csv
 #' @examples
+#' \dontrun{
 #' prefix <- system.file("extdata/", package="Trans2Kegg")
 #' mergePaths(prefix=prefix)
+#' }
 #' @export
 
 mergePaths <- function(prefix = "") {

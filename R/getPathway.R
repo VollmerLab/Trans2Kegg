@@ -6,9 +6,11 @@
 #' @param annotFile csv output file from annotateTranscripts
 #' @return Annotation results are written to path.csv, pthKo.csv
 #' @examples
+#' \dontrun{
 #' filepath <- system.file("extdata", "cvCnt.csv", 
 #' package="Trans2Kegg")
 #' getPathways(filepath)
+#' }
 #' @export
 getPathways <- function(annotFile = "cvCnt.csv"){
     # These were going to be params, but Roxygen kept

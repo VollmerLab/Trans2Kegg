@@ -7,9 +7,11 @@
 #' @param e_val e-value cutoff
 #' @return Annotation results are written to cvCnt.csv.
 #' @examples
+#' \dontrun{
 #' annot <- system.file("extdata", "annot.csv", 
 #'     package="Trans2Kegg")
 #' mergeAnnotations(annot)
+#' }
 #' @export
 
 mergeAnnotations <- function(annotFile="annot.csv", cov=.5, e_val=1e-10){
