@@ -27,12 +27,10 @@ Annotation results are written to the csv file specified by outFile
 Annotate DE transcripts using NCBI BLAST AMI
 }
 \examples{
-\dontrun{
 instance <- 'i-07da948c2d85b7388'
 dns <- 'ec2-54-175-9-203.compute-1.amazonaws.com'
 fasta <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
 annot <- system.file("extdata", "annot.csv", package="Trans2Kegg")
 annotateAWS(c("KXJ29331.1"), fasta,annot, instance=instance,
 dns=dns, threads=2)
-}
 }
