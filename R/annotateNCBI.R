@@ -12,11 +12,9 @@
 #' @param evalue e-value cutoff for BLAST results
 #' @return Annotation results are written to the csv file specified by outFile
 #' @examples
-#' \dontrun{
 #' fasta <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
 #' annot <- system.file("extdata", "annot.csv", package="Trans2Kegg")
 #' annotateNCBI(c("KXJ29331.1"), fasta, annot)
-#' }
 #' @export
 annotateNCBI <- function(ids, fasta, out="annot.csv", evalue="1e-5"){
     refTrans <- readDNAStringSet(fasta)
