@@ -16,9 +16,7 @@ Annotation results are written to path.csv, pthKo.csv
 Get KEGG pathway information for annotated transcripts
 }
 \examples{
-\dontrun{
 filepath <- system.file("extdata", "cvCnt.csv", 
 package="Trans2Kegg")
 getPathways(filepath)
-}
 }
