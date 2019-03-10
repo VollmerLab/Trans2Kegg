@@ -4,7 +4,7 @@
 \alias{mergeAnnotations}
 \title{Merge DE, BLAST, KEGG Info and filter}
 \usage{
-mergeAnnotations(annotFile = "annot.csv", cov = 0.5, e_val = 1e-10)
+mergeAnnotations(dfAll, annotFile, cov = 0.5, e_val = 1e-10)
 }
 \arguments{
 \item{annotFile}{csv output file from annotateTranscripts}
@@ -20,9 +20,9 @@ Annotation results are written to cvCnt.csv.
 Merge DE, BLAST, KEGG Info and filter
 }
 \examples{
-\dontrun{
 annot <- system.file("extdata", "annot.csv", 
     package="Trans2Kegg")
-mergeAnnotations(annot)
-}
+dfAll <- system.file("extdata", "dfAll.csv", 
+    package="Trans2Kegg")
+mergeAnnotations(dfAll, annot)
 }

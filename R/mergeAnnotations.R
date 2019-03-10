@@ -7,14 +7,14 @@
 #' @param e_val e-value cutoff
 #' @return Annotation results are written to cvCnt.csv.
 #' @examples
-#' \dontrun{
 #' annot <- system.file("extdata", "annot.csv", 
 #'     package="Trans2Kegg")
-#' mergeAnnotations(annot)
-#' }
+#' dfAll <- system.file("extdata", "dfAll.csv", 
+#'     package="Trans2Kegg")
+#' mergeAnnotations(dfAll, annot)
 #' @export
 
-mergeAnnotations <- function(annotFile="annot.csv", cov=.5, e_val=1e-10){
+mergeAnnotations <- function(dfAll, annotFile, cov=.5, e_val=1e-10){
     #These variables are defined in the header of the csv file read below.
     #Defining here to avoid note.
     ko <- ''
