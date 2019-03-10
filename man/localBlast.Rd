@@ -21,8 +21,6 @@ DE Sequences are written to specified FASTA file
 Perform a local BLAST of DE transcripts
 }
 \examples{
-\dontrun{
 filepath <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
 localBlast(c("KXJ29317.1"), filepath)
-}
 }
