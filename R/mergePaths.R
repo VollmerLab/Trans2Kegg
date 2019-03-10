@@ -7,15 +7,15 @@
 #' @return Annotation results are written to dePathsDetails.csv,
 #' countByClass.csv, countByPath.csv
 #' @examples
-#' prefix <- system.file("extdata/", package="Trans2Kegg")
+#' prefix <- system.file("extdata", package="Trans2Kegg")
 #' mergePaths(prefix=prefix)
 #' @export
 
 mergePaths <- function(prefix = "") {
     # load DE, ortholog, and pathway info
-    cvCnt <- paste0(prefix, "cvCnt.csv")
-    pthKo <- paste0(prefix, "pthKo.csv")
-    pth <- paste0(prefix, "path.csv")
+    cvCnt <- paste0(prefix, "/cvCnt.csv")
+    pthKo <- paste0(prefix, "/pthKo.csv")
+    pth <- paste0(prefix, "/path.csv")
     # Make sure no duplicates
     deCovAndCountDesc <- unique(read.csv(cvCnt))
     dfPathsKos <- unique(read.csv(pthKo))
