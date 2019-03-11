@@ -167,8 +167,9 @@ Query the KEGG API to obtain pathway information, and produce a table of
 pathway to ortholog mappings (Table 4), and pathway ID to pathway detail
 mappings (Table 5).
 
-```{r getPaths, eval=FALSE}
-getPathways()
+```{r getPaths, eval=TRUE}
+cvCnt <- system.file("extdata", "cvCnt.csv", package="Trans2Kegg")
+getPathways(cvCnt)
 ```
 
 ### Merge and summarize all annotations
