@@ -7,6 +7,8 @@
 mergeAnnotations(dfAll, annotFile, cov = 0.5, e_val = 1e-10)
 }
 \arguments{
+\item{dfAll}{csv output file from annotateDE}
+
 \item{annotFile}{csv output file from annotateTranscripts}
 
 \item{cov}{Query coverage cutoff}

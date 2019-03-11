@@ -2,6 +2,7 @@
 #' @name mergeAnnotations
 #' @importFrom utils read.csv write.csv
 #' @importFrom dplyr count
+#' @param dfAll csv output file from annotateDE
 #' @param annotFile csv output file from annotateTranscripts
 #' @param cov Query coverage cutoff
 #' @param e_val e-value cutoff
