@@ -18,6 +18,7 @@
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Digestive system","Bile secretion","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Metabolism"," Lipid metabolism","Biosynthesis of unsaturated fatty acids","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Cancers: Specific types","Breast cancer","Down",1
+"Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Immune system","C-type lectin receptor signaling pathway","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signal transduction","Calcium signaling pathway","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signal transduction","cAMP signaling pathway","Down",2
 "Vibrio_Vibrio_vs_NoVibrio","Cellular Processes"," Cell growth and death","Cellular senescence","Down",1
@@ -26,7 +27,6 @@
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Cancers: Overview","Choline metabolism in cancer","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Environmental adaptation","Circadian entrainment","Down",2
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Excretory system","Collecting duct acid secretion","Down",1
-"Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Immune system","C-type lectin receptor signaling pathway","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Endocrine and metabolic diseases","Cushing syndrome","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Metabolism"," Metabolism of other amino acids","D-Arginine and D-ornithine metabolism","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Nervous system","Dopaminergic synapse","Down",2
@@ -68,9 +68,9 @@
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Sensory system","Inflammatory mediator regulation of TRP channels","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Endocrine system","Insulin signaling pathway","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Infectious diseases: Viral","Kaposi sarcoma-associated herpesvirus infection","Down",1
+"Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Nervous system","Long-term potentiation","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Aging","Longevity regulating pathway - multiple species","Down",2
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Aging","Longevity regulating pathway - worm","Down",2
-"Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Nervous system","Long-term potentiation","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Metabolism"," Amino acid metabolism","Lysine biosynthesis","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Metabolism"," Amino acid metabolism","Lysine degradation","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signal transduction","MAPK signaling pathway - plant","Down",1
@@ -140,8 +140,8 @@
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Circulatory system","Adrenergic signaling in cardiomyocytes","Up",2
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Endocrine and metabolic diseases","AGE-RAGE signaling pathway in diabetic complications","Up",2
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Substance dependence","Alcoholism","Up",1
-"Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Excretory system","Aldosterone-regulated sodium reabsorption","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Endocrine system","Aldosterone synthesis and secretion","Up",1
+"Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Excretory system","Aldosterone-regulated sodium reabsorption","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Metabolism"," Lipid metabolism","alpha-Linolenic acid metabolism","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Neurodegenerative diseases","Alzheimer disease","Up",3
 "Vibrio_Vibrio_vs_NoVibrio","Metabolism"," Carbohydrate metabolism","Amino sugar and nucleotide sugar metabolism","Up",1
@@ -158,6 +158,7 @@
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Cancers: Specific types","Bladder cancer","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Cancers: Specific types","Breast cancer","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Metabolism"," Carbohydrate metabolism","Butanoate metabolism","Up",1
+"Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Immune system","C-type lectin receptor signaling pathway","Up",2
 "Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signal transduction","Calcium signaling pathway","Up",3
 "Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signal transduction","cAMP signaling pathway","Up",2
 "Vibrio_Vibrio_vs_NoVibrio","Cellular Processes"," Cell growth and death","Cell cycle - yeast","Up",1
@@ -174,7 +175,6 @@
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Environmental adaptation","Circadian entrainment","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Cancers: Specific types","Colorectal cancer","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Immune system","Complement and coagulation cascades","Up",4
-"Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Immune system","C-type lectin receptor signaling pathway","Up",2
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Endocrine and metabolic diseases","Cushing syndrome","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Development","Dorso-ventral axis formation","Up",2
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Cancers: Specific types","Endometrial cancer","Up",1
@@ -288,8 +288,8 @@
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Immune system","T cell receptor signaling pathway","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Metabolism"," Metabolism of terpenoids and polyketides","Terpenoid backbone biosynthesis","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signal transduction","TGF-beta signaling pathway","Up",1
-"Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Immune system","Th17 cell differentiation","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Immune system","Th1 and Th2 cell differentiation","Up",1
+"Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Immune system","Th17 cell differentiation","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Cancers: Specific types","Thyroid cancer","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Endocrine system","Thyroid hormone signaling pathway","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signal transduction","TNF signaling pathway","Up",3

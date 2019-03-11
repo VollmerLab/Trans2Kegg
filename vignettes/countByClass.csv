@@ -29,8 +29,8 @@
 "Vibrio_Vibrio_vs_NoVibrio","Metabolism"," Nucleotide metabolism","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Genetic Information Processing"," Replication and repair","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Sensory system","Down",4
-"Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signaling molecules and interaction","Down",2
 "Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signal transduction","Down",17
+"Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signaling molecules and interaction","Down",2
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Substance dependence","Down",4
 "Vibrio_Vibrio_vs_NoVibrio","Genetic Information Processing"," Translation","Down",1
 "Vibrio_Vibrio_vs_NoVibrio","Cellular Processes"," Transport and catabolism","Down",4
@@ -64,8 +64,8 @@
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Neurodegenerative diseases","Up",4
 "Vibrio_Vibrio_vs_NoVibrio","Metabolism"," Nucleotide metabolism","Up",1
 "Vibrio_Vibrio_vs_NoVibrio","Organismal Systems"," Sensory system","Up",1
-"Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signaling molecules and interaction","Up",5
 "Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signal transduction","Up",36
+"Vibrio_Vibrio_vs_NoVibrio","Environmental Information Processing"," Signaling molecules and interaction","Up",5
 "Vibrio_Vibrio_vs_NoVibrio","Human Diseases"," Substance dependence","Up",3
 "Vibrio_Vibrio_vs_NoVibrio","Genetic Information Processing"," Translation","Up",2
 "Vibrio_Vibrio_vs_NoVibrio","Cellular Processes"," Transport and catabolism","Up",5

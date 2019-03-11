@@ -176,29 +176,32 @@ getPathways(cvCnt)
 
 Merge the DE, KEGG ortholog, and pathway and provide summary counts.
 
-```{r mergePaths, eval=FALSE}
-mergePaths() 
+```{r mergePaths, eval=TRUE}
+prefix <- system.file("extdata", package="Trans2Kegg")
+mergePaths(prefix=prefix) 
 ```
 ### Sample Output
 
 
-```{r Table1, eval=FALSE}
-deAll <- read.csv("dfAll.csv", row.names=1)
+```{r Table1, eval=TRUE}
+library(knitr)
+dfAll <- system.file("extdata", "dfAll.csv", package="Trans2Kegg")
+deAll <- read.csv(dfAll, row.names=1)
 kable(head(deAll), caption = "Sample of deAll.csv, the output of function 
     AnnotateDE, which combines all comparisons from a DESeqDataSet
     into a single file to facilitate annotation.", booktabs=TRUE)
 ```
 
-```{r Table2, eval=FALSE}
-outFile <- "annot.csv"
-annot <- read.csv(outFile, stringsAsFactors=FALSE)
-kable(head(annot, n= 20L), 
+```{r Table2, eval=TRUE}
+annot <- system.file("extdata", "annot.csv", package="Trans2Kegg")
+dfAnnot <- read.csv(annot, stringsAsFactors=FALSE)
+kable(head(dfAnnot, n= 20L), 
     caption="Sample annot.csv output of annotateTranscript and annotateAws 
     functions.", booktab=TRUE)
 ```
 
-```{r Table3, eval=FALSE}
-dfCovCount <- read.csv("cvCnt.csv", stringsAsFactors=FALSE)
+```{r Table3, eval=TRUE}
+dfCovCount <- read.csv(cvCnt, stringsAsFactors=FALSE)
 dfCovCount$Factor <- gsub("_", " ", dfCovCount$Factor)
 kable(head(dfCovCount, n=20L), 
     caption="Sample cvCnt.csv output of mergePathways function.
