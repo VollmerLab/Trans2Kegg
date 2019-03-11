@@ -112,13 +112,15 @@ The annotateTranscript function requires three parameters - 1) a vector of
 accession numbers from the FASTA file, 2) the path to the FASTA file and 3) the
 output filename.
 
-```{r Annotate, eval=FALSE}
-deAll <- read.csv("dfAll.csv", row.names=1)
+```{r Annotate, eval=TRUE}
+dfAll <- system.file("extdata", "dfAll.csv", package="Trans2Kegg")
+aiptasia <- system.file("extdata", "aiptasia.fa", package="Trans2Kegg")
+deAll <- read.csv(dfAll, row.names=1)
 # Get the IDs (rownames) from deAll.
 ids <- rownames(deAll)
 # Select a subset of rows for testing purposes
 ids2 <- head(ids, n=10)
-annotateNCBI(ids2, "aiptasia.fa")
+annotateNCBI(ids2, aiptasia)
 ```
 ### Optional: Fast BLAST with AWS
 
