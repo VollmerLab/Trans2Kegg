@@ -138,8 +138,8 @@ annotate (ids2), FASTA file of transcripts (fastaFile), instance ID, and DNS
 ID. Optionally pass the threads parameter to change from the default of four
 threads.
 
-```{r AnnotateAWS, eval=FALSE, message=FALSE, warning=FALSE}
-deAll <- read.csv("dfAll.csv", row.names=1)
+```{r AnnotateAWS, eval=TRUE, message=FALSE, warning=FALSE}
+deAll <- read.csv(dfAll, row.names=1)
 # Get the IDs (rownames) from deAll.
 ids <- rownames(deAll)
 # Select a subset of rows for testing purposes
@@ -148,7 +148,7 @@ ids2 <- head(ids, n=200)
 # Users must launch their own NCBI BLAST AMI
 instance <- 'i-07da948c2d85b7388'
 dns <- 'ec2-54-175-9-203.compute-1.amazonaws.com'
-annotateAWS(ids2, "aiptasia.fa", instance=instance, dns=dns, threads=2)
+annotateAWS(ids2, aiptasia, instance=instance, dns=dns, threads=2)
 ```
 
 ### Merge Annotations
@@ -156,8 +156,9 @@ annotateAWS(ids2, "aiptasia.fa", instance=instance, dns=dns, threads=2)
 Merge the BLAST and KEGG annotations with DE results, and filter to obtain 1:1
 associations between transcript IDs and KEGG orthologs (Table 3).
 
-```{r mergeAnnotations, eval=FALSE}
-mergeAnnotations()
+```{r mergeAnnotations, eval=TRUE}
+annot <- system.file("extdata", "annot.csv", package="Trans2Kegg")
+mergeAnnotations(dfAll, annot)
 ```
 
 ### Get KEGG pathway information
