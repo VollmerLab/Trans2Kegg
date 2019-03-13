@@ -120,7 +120,7 @@ deAll <- read.csv(dfAll, row.names=1)
 ids <- rownames(deAll)
 # Select a subset of rows for testing purposes
 ids2 <- head(ids, n=10)
-annotateNCBI(ids2, aiptasia)
+#annotateNCBI(ids2, aiptasia)
 ```
 ### Optional: Fast BLAST with AWS
 

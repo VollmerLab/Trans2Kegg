@@ -1,7 +1,7 @@
 Package: Trans2Kegg
 Type: Package
 Title: Annotate transcripts and predicted protein sequences
-Version: 0.99.25
+Version: 0.99.26
 Authors@R: c(
     person("Charles", "Roesel", email = "croesel@gmail.com", role = "cre"),
     person("Charles", "Roesel", email = "croesel@gmail.com", role = "aut"),
@@ -19,7 +19,6 @@ Imports:
     tidyr,
     KEGGREST,
     Biostrings,
-    annotate,
     utils,
     stats,
     DESeq2,
