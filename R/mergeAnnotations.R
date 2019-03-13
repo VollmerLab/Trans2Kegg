@@ -25,7 +25,7 @@ mergeAnnotations <- function(dfAll, annotFile, cov=.5, e_val=1e-10){
     desc <- ''
     annot <- read.csv(annotFile)
     # Load DE information
-    de <- read.csv("dfAll.csv")
+    de <- read.csv(dfAll)
     colnames(de) <- c("Iteration_query.def", "log2FoldChange", "padj", "Factor")
     # Calculate query coverage
     annot$qCov <- (annot$Hsp_align.len - annot$Hsp_gaps)/annot$Hit_len
